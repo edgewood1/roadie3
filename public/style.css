@@ -1,0 +1,17 @@
+body {
+  /* padding: 50px; */
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#map {
+  height: 350px; /* The height is 400 pixels */
+  /* width: 40%; The width is the width of the web page */
+}
+
+#places {
+  margin-left: 5%;
+}
+
+.navbar-fixed {
+  margin-top: -20px;
+}
