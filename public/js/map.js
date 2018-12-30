@@ -2,6 +2,13 @@
 // select type
 // geocode, draw map, markers
 
+// begin process
+
+$(document).ready(function() {
+  type = ["museum"];
+  geoCode(place, type);
+});
+
 var place = "Durham, NC";
 var totalData, input, newinput, type, map;
 
@@ -18,24 +25,71 @@ var totalData, input, newinput, type, map;
 //   initMap(pyrmont, type);
 
 // });
+$("#create").on("click", function(e) {
+  // e.preventDefault();
 
+  $("#modal1").modal();
+});
+$("#place7").on("click", function(e) {
+  // e.preventDefault();
+  $("#themeplace").empty();
+  var theme, place1;
+  database.ref().on(
+    "value",
+    // datum level
+    function(snapshot) {
+      console.log(snapshot.val());
+      // dynamic theme level
+      snapshot.forEach(function(snapshop1) {
+        // place level --
+        snapshop1.forEach(function(snap) {
+          place1 = snap.val().place;
+          theme = snap.key;
+          var message = theme + " : " + place1;
+
+          var li = $("<li>").text(message);
+          $("#themeplace").append(li);
+        });
+      });
+      // If any errors are experienced, log them to console.
+    },
+    function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }
+  );
+  $("#modal2").modal();
+});
 // enter new place --
-
+var theme,
+  datum = {};
 $("#submit").on("click", function(e) {
   e.preventDefault();
 
   place = $("#place")
     .val()
     .trim();
+  theme = $("#theme")
+    .val()
+    .trim();
+  place = { place: place };
+  datum[theme] = place;
+
+  database.ref().on(
+    "value",
+    function(snapshot) {
+      // If Firebase has a highPrice and highBidder stored, update our client-side variables
+
+      database.ref().update({ datum });
+
+      // If any errors are experienced, log them to console.
+    },
+    function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }
+  );
+
   console.log(place);
   geoCode(place);
-});
-
-// begin process
-
-$(document).ready(function() {
-  type = ["museum"];
-  geoCode(place, type);
 });
 
 // 1. geoCode
@@ -69,7 +123,7 @@ function initMap(pyrmont, type) {
   // auto complete >
 
   var autocomplete = new google.maps.places.Autocomplete(input);
-
+  $("#modal1").modal();
   // Bind the map's bounds (viewport) property to the autocomplete object,
   // so that the autocomplete requests use the current map bounds for the
   // bounds option in the request.

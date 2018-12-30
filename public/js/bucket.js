@@ -1,4 +1,4 @@
-// 1. drag and drop
+// drag and drop / firebase config
 
 function allowDrop(ev) {
   ev.preventDefault();

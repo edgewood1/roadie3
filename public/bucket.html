@@ -14,7 +14,11 @@
 
  
     <link rel="stylesheet" href="style.css" type="text/css">
-
+    <style>
+        .pac-container {
+            z-index: 10000 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,9 +30,9 @@
             </a>
             <ul class="right hide-on-med-and-down">
               <li><a href="/">Home</a></li>
-              <li><a href="/login.html">Log In</a></li>
-              <li><a href="/edit.html">Edit</a></li>
-              <li><a href="/placeType.html">Create</a></li>
+              <li><a href="#" data-target="modal2" class="modal-trigger" id ="place7" >Places</a></li>
+              <li><a href="#" data-target="modal1" class="modal-trigger" id ="create" >Create</a></li>
+              <li><a href="/placeType.html">Create2</a></li>
               <li><a href="/bucket.html">Bucket</a></li>
               <li><a href="/dates.html">Dates</a></li>
             </ul>
@@ -38,13 +42,47 @@
 
     <ul id="slide-out" class="sidenav">            
       <li><a href="/">Home</a></li>
-      <li><a href="/login">Log In</a></li>
-      <li><a href="/edit.html">Edit</a></li>
-      <li><a href="/placeType.html">Create</a></li>
+      <li><a href="#" data-target="modal2" class="modal-trigger" id ="place7" >Places</a></li>
+      <li><a href="#" data-target="modal1" class="modal-trigger" id="create">Create</a></li>
+      <li><a href="/placeType.html">Create2</a></li>
       <li><a href="/bucket">Bucket</a></li>
       <li><a href="/dates.html">Dates</a></li>
       </ul>
     
+ 
+ 
+   
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+
+     <form> 
+       <label for="place">Destination</label>
+                <input type="text" id="place" />
+                <label for="theme">Theme </label>
+                <input type="text" id="theme" />
+                <label for="arrive">Arrive</label>
+                <input type="text" id="arrive" />
+                <label for="depart">Depart</label>
+                <input type="text" id="depart" />
+                <!-- <label for="submit">Submit</label> -->
+                <input type="submit" class="modal-close" id="submit" />
+            </form>
+    </div>
+    <!-- <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div> -->
+  </div>
+ 
+<!-- Modal Structure -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <ul id="themeplace">
+        
+      </ul>
+    </div>
+  </div>
 
 <div class="container">
 
@@ -144,8 +182,9 @@
     
 </script>
     <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+    <script src="./js/bucket.js"></script>
 <script src="./js/map.js"></script>
-<script src="./js/bucket.js"></script>
+
 <script src="./js/bucket2.js"></script>
 <script src="./js/bucket3.js"></script>
 
