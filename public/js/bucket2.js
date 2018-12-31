@@ -1,27 +1,40 @@
 /// on LOAD - check for bucket list values
 var bucketList = [],
   y = 0;
-database.ref().on(
-  "value",
-  function(snapshot) {
-    // If Firebase has a highPrice and highBidder stored, update our client-side variables
-    if (snapshot.child("bucketList").exists()) {
-      // Set the variables for highBidder/highPrice equal to the stored values.
-      bucketList = snapshot.val().bucketList;
-      console.log(bucketList);
-      placeInBLfromDb(bucketList);
-    }
-
-    // If any errors are experienced, log them to console.
-  },
-  function(errorObject) {
-    console.log("The read failed: " + errorObject.code);
+var current = {};
+$.ajax({
+  method: "GET",
+  url: "/current",
+  function(data) {
+    current = data;
+    console.log(current);
   }
-);
+});
 
 // on load, fill up bucket list
 
-function placeInBLfromDb(bucketList) {
+function placeInBLfromDb() {
+  database
+    .ref("datum/")
+    .child(current.theme)
+    .on(
+      "value",
+      function(snapshot) {
+        // If Firebase has a highPrice and highBidder stored, update our client-side variables
+        // if (snapshot.child("datum").exists()) {
+        // Set the variables for highBidder/highPrice equal to the stored values.
+        console.log(snapshot);
+        bucketList = snapshot.val().bucketList;
+        // console.log(bucketList);
+
+        // }
+
+        // If any errors are experienced, log them to console.
+      },
+      function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      }
+    );
   bucketList.forEach(function(e) {
     var bucket = $("#bucketText");
     var li = $("<li>");
@@ -62,9 +75,12 @@ function placeInBucketList(e) {
 
   bucketList.push(itemClicked);
 
-  database.ref().update({
-    bucketList: bucketList
-  });
+  database
+    .ref("datum/")
+    .child(current.theme)
+    .update({
+      bucketList: bucketList
+    });
 }
 var days = 3;
 var target, today, li, y, line;
@@ -87,33 +103,44 @@ function schedule2() {
 
 function readDayBoxes() {
   $(".day-box").empty();
-  database.ref().on(
-    "value",
-    function(snapshot) {
-      // If Firebase has a highPrice and highBidder stored, update our client-side variables
-      if (snapshot.child("now").exists()) {
+  database
+    .ref("datum/")
+    .child(current.theme)
+    .on(
+      "value",
+      function(snapshot) {
+        // If Firebase has a highPrice and highBidder stored, update our client-side variables
+        // if (snapshot.child("now").exists()) {
         // Set the variables for highBidder/highPrice equal to the stored values.
-        var now = snapshot.val().now;
-        console.log(now);
-
-        for (var a = 1; a <= 3; a++) {
+        var events = snapshot.val().events;
+        console.log(events);
+        day = Object.keys(events);
+        console.log(day);
+        for (var a = 0; a < day.length; a++) {
+          // day = Object.keys
           // day1
-          day = "day" + a;
+
           // target> id = day1
-          target = $("#" + day);
+          target = $("#" + day[a]);
 
           // get now.day1 from db snapshot
-          today = now[day];
+          var today = events[day[a]];
           console.log(today); // an array
 
           // create an li element with this now.day
 
           // loop through items of now.day1
-          console.log(today.length);
-          for (var x = 0; x < today.length; x++) {
+          // console.log(today.length);
+          for (var x = 0; x <= today.length; x++) {
             // insert now.day1[0] into li tag
             if (today[x]) {
               line = $("<li>").text(today[x]);
+              line.attr({
+                value: today[x],
+                draggable: true,
+                id: "a" + x,
+                ondragstart: "drag(event)"
+              });
               console.log("what we will print " + today[x]);
 
               // add it to id = day1
@@ -122,14 +149,14 @@ function readDayBoxes() {
             // repeat for id=day2
           }
         }
-      }
+        // }
 
-      // If any errors are experienced, log them to console.
-    },
-    function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    }
-  );
+        // If any errors are experienced, log them to console.
+      },
+      function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      }
+    );
 }
 
 /// save daily events
@@ -139,8 +166,8 @@ var z = [];
 
 function save() {
   days = 3;
-  var now = {};
-  console.log(now);
+  var events = {};
+  console.log(events);
 
   // loop through 3 days
   for (var z = 1; z <= days; z++) {
@@ -148,7 +175,7 @@ function save() {
     // to get this object:
     // get all the day1 children
     // map through them and return the trimmed text.
-    now["day" + z] = $("#day" + z)
+    events["day" + z] = $("#day" + z)
       .children()
       .map(function(e) {
         return $.trim($(this).text());
@@ -156,9 +183,11 @@ function save() {
       .get();
   }
 
-  console.log(now);
-  database.ref().update({
-    now: now
-  });
+  database
+    .ref("datum/")
+    .child(current.theme)
+    .update({
+      events: events
+    });
   readDayBoxes();
 }

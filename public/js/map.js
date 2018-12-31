@@ -5,31 +5,42 @@
 // begin process
 
 $(document).ready(function() {
-  type = ["museum"];
-  geoCode(place, type);
+  // geoCode(place, type);
 });
 
-var place = "Durham, NC";
-var totalData, input, newinput, type, map;
+var place = "Durham, NC",
+  type = ["museum"];
+var totalData, input, newinput, type, map, current;
 
-// select type
+// on click for selecting place from modal
 
-// $(".type").on("click", function(e) {
-//   input = $(this)
-//     .attr("value")
-//     .toLowerCase();
-//   type = null;
+$("#themeplace").on("click", showDetails);
 
-//   type = t[input];
+function showDetails(e) {
+  place = e.target.dataset.name;
+  theme = e.target.dataset.theme;
+  current = {
+    place: place,
+    theme: theme
+  };
+  $.ajax({
+    method: "POST",
+    url: "/current",
+    data: current
+  });
+  console.log(current);
+  geoCode(current);
+  $("#modal2").modal();
 
-//   initMap(pyrmont, type);
+  placeInBLfromDb(current);
+}
 
-// });
+// on click for create and bucket tab buttons
+
 $("#create").on("click", function(e) {
-  // e.preventDefault();
-
   $("#modal1").modal();
 });
+
 $("#place7").on("click", function(e) {
   // e.preventDefault();
   $("#themeplace").empty();
@@ -46,12 +57,18 @@ $("#place7").on("click", function(e) {
           place1 = snap.val().place;
           theme = snap.key;
           var message = theme + " : " + place1;
-
-          var li = $("<li>").text(message);
+          var li = $("<li>");
+          var a = $("<a>")
+            .attr({
+              class: "place2",
+              "data-name": place1,
+              "data-theme": theme
+            })
+            .text(message);
+          li.append(a);
           $("#themeplace").append(li);
         });
       });
-      // If any errors are experienced, log them to console.
     },
     function(errorObject) {
       console.log("The read failed: " + errorObject.code);
@@ -59,7 +76,9 @@ $("#place7").on("click", function(e) {
   );
   $("#modal2").modal();
 });
+
 // enter new place --
+
 var theme,
   datum = {};
 $("#submit").on("click", function(e) {
@@ -74,14 +93,12 @@ $("#submit").on("click", function(e) {
   place = { place: place };
   datum[theme] = place;
 
+  // add the new place to database
+
   database.ref().on(
     "value",
     function(snapshot) {
-      // If Firebase has a highPrice and highBidder stored, update our client-side variables
-
       database.ref().update({ datum });
-
-      // If any errors are experienced, log them to console.
     },
     function(errorObject) {
       console.log("The read failed: " + errorObject.code);
@@ -95,15 +112,15 @@ $("#submit").on("click", function(e) {
 // 1. geoCode
 
 var x, pyrmont;
-function geoCode(place, type) {
+function geoCode(current) {
   var geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ address: place }, function(results, status) {
+  geocoder.geocode({ address: current.place }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       lat = parseFloat(results[0].geometry.location.lat());
       long = parseFloat(results[0].geometry.location.lng());
       pyrmont = new google.maps.LatLng(lat, long);
 
-      initMap(pyrmont, type);
+      initMap(pyrmont, current);
     } else {
       alert("Something got wrong " + status);
     }
@@ -112,7 +129,7 @@ function geoCode(place, type) {
 
 // 2. draw map
 
-function initMap(pyrmont, type) {
+function initMap(pyrmont, current) {
   map = new google.maps.Map(document.getElementById("map"), {
     center: pyrmont,
     zoom: 25
@@ -122,7 +139,12 @@ function initMap(pyrmont, type) {
 
   // auto complete >
 
-  var autocomplete = new google.maps.places.Autocomplete(input);
+  var options = {
+    types: ["(cities)"],
+    componentRestrictions: { country: "us" }
+  };
+
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
   $("#modal1").modal();
   // Bind the map's bounds (viewport) property to the autocomplete object,
   // so that the autocomplete requests use the current map bounds for the
@@ -144,7 +166,7 @@ function initMap(pyrmont, type) {
 
   // Perform a nearby search.
   service.nearbySearch(
-    { location: pyrmont, radius: 2000, type: [type] },
+    { location: pyrmont, radius: 2000, type: [current.type] },
     function(results, status, pagination) {
       if (status !== "OK") return;
       console.log(results);

@@ -2,17 +2,15 @@
 <!-- <html> -->
 
 <head>
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-
-   
-
- 
+    <meta name="viewport" content="width= device-width, initial-scale= 1.0">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
     <link rel="stylesheet" href="style.css" type="text/css">
     <style>
         .pac-container {
@@ -26,40 +24,36 @@
         <nav class="nav-wrapper">
             <!-- <div class="container"> -->
             <a href="#" class="sidenav-trigger" data-target="slide-out">
-                    <i class="material-icons">menu</i>
+                <i class="material-icons">menu</i>
             </a>
             <ul class="right hide-on-med-and-down">
-              <li><a href="/">Home</a></li>
-              
-              <li><a href="#" data-target="modal1" class=" modal-trigger id ="create" >Create</a></li>
-              <li><a href="/placeType.html">Create2</a></li>
-              <li><a href="/bucket.html">Bucket</a></li>
-              <li><a href="/dates.html">Dates</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="#" data-target="modal2" class="modal-trigger"
+                        id="place7">Places</a></li>
+                <li><a href="#" data-target="modal1" class="modal-trigger"
+                        id="create">Create</a></li>
+                <li><a href="/bucket.html">Bucket</a></li>
+
             </ul>
-        <!-- </div> -->
+            <!-- </div> -->
         </nav>
     </div>
 
-    <ul id="slide-out" class="sidenav">            
-      <li><a href="/">Home</a></li>
-      
-      <li><a href="#" data-target="modal1" class="modal-trigger id="create">Create</a></li>
-      <li><a href="/placeType.html">Create2</a></li>
-      <li><a href="/bucket">Bucket</a></li>
-      <li><a href="/dates.html">Dates</a></li>
-      </ul>
-    
+    <ul id="slide-out" class="sidenav">
+        <li><a href="/">Home</a></li>
+        <li><a href="#" data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
+        <li><a href="#" data-target="modal1" class="modal-trigger" id="create">Create</a></li>
+        <li><a href="/bucket">Bucket</a></li>
 
-<div id = "modal">
-  <!-- Modal Trigger -->
-   
+    </ul>
 
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal">
-    <div class="modal-content">
+    <!-- Modal Structure 1-->
 
-     <form> 
-       <label for="place">Destination</label>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+
+            <form>
+                <label for="place">Destination</label>
                 <input type="text" id="place" />
                 <label for="theme">Theme </label>
                 <input type="text" id="theme" />
@@ -68,40 +62,50 @@
                 <label for="depart">Depart</label>
                 <input type="text" id="depart" />
                 <!-- <label for="submit">Submit</label> -->
-                <input type="submit" id="submit" />
+                <input type="submit" class="modal-close" id="submit" />
             </form>
+        </div>
     </div>
-    <!-- <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
-    </div> -->
-  </div>
-</div>
-<div class="container">
-    <div class="row"> 
-        <div class="col s6"> 
-            <h1> Roadie <h1> 
-                </div>
-                </div>
-                </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script>
-      $(document).ready(function(){
+    <!-- Modal Structure 2-->
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <ul id="themeplace">
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- landing page -->
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <h1> Roadie <h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- script -->
+
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+            <script>
+    $(document).ready(function(){
         $('.sidenav').sidenav();
-      });
+      });</script>
+            <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjqIlwccRdfx6NRHDBZXYJoy3-NJB4eQk&libraries=places">
+
 </script>
+            <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+            <script src="./js/bucket.js"></script>
+            <script src="./js/map.js"></script>
 
- 
- <script async defer
-    
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjqIlwccRdfx6NRHDBZXYJoy3-NJB4eQk&libraries=places">
-    
-</script>
- <script src="./js/index.js"></script>
+            <script src="./js/bucket2.js"></script>
+            <script src="./js/bucket3.js"></script>
 
+        </body>
 
-</body>
-
-</html>
+    </html>

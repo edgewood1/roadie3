@@ -2,19 +2,17 @@
 <!-- <html> -->
 
 <head>
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-
-   
-
- 
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <style>
+  <meta name="viewport" content="width= device-width, initial-scale= 1.0">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <style>
         .pac-container {
             z-index: 10000 !important;
         }
@@ -22,172 +20,175 @@
 </head>
 
 <body>
-    <div class="navbar-fixed">
-        <nav class="nav-wrapper">
-            <!-- <div class="container"> -->
-            <a href="#" class="sidenav-trigger" data-target="slide-out">
-                    <i class="material-icons">menu</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-              <li><a href="/">Home</a></li>
-              <li><a href="#" data-target="modal2" class="modal-trigger" id ="place7" >Places</a></li>
-              <li><a href="#" data-target="modal1" class="modal-trigger" id ="create" >Create</a></li>
-              <li><a href="/placeType.html">Create2</a></li>
-              <li><a href="/bucket.html">Bucket</a></li>
-              <li><a href="/dates.html">Dates</a></li>
-            </ul>
-        <!-- </div> -->
-        </nav>
-    </div>
 
-    <ul id="slide-out" class="sidenav">            
-      <li><a href="/">Home</a></li>
-      <li><a href="#" data-target="modal2" class="modal-trigger" id ="place7" >Places</a></li>
-      <li><a href="#" data-target="modal1" class="modal-trigger" id="create">Create</a></li>
-      <li><a href="/placeType.html">Create2</a></li>
-      <li><a href="/bucket">Bucket</a></li>
-      <li><a href="/dates.html">Dates</a></li>
+  <!-- nav  -->
+
+  <div class="navbar-fixed">
+    <nav class="nav-wrapper">
+
+      <a href="#" class="sidenav-trigger" data-target="slide-out">
+        <i class="material-icons">menu</i>
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <!-- <li><a href="/">Home</a></li> -->
+        <li><a href="#" data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
+        <li><a href="#" data-target="modal1" class="modal-trigger" id="create">Create</a></li>
+        <li><a href="/bucket.html">Bucket</a></li>
+
       </ul>
-    
- 
- 
-   
 
-  <!-- Modal Structure -->
+    </nav>
+  </div>
+
+  <ul id="slide-out" class="sidenav">
+    <!-- <li><a href="/">Home</a></li> -->
+    <li><a href="#" data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
+    <li><a href="#" data-target="modal1" class="modal-trigger" id="create">Create</a></li>
+    <li><a href="/bucket">Bucket</a></li>
+
+  </ul>
+
+  <!-- Modal Structure 1 -->
+
   <div id="modal1" class="modal">
     <div class="modal-content">
-
-     <form> 
-       <label for="place">Destination</label>
-                <input type="text" id="place" />
-                <label for="theme">Theme </label>
-                <input type="text" id="theme" />
-                <label for="arrive">Arrive</label>
-                <input type="text" id="arrive" />
-                <label for="depart">Depart</label>
-                <input type="text" id="depart" />
-                <!-- <label for="submit">Submit</label> -->
-                <input type="submit" class="modal-close" id="submit" />
-            </form>
+      <form>
+        <label for="place">Destination</label>
+        <input type="text" id="place" />
+        <label for="theme">Theme </label>
+        <input type="text" id="theme" />
+        <label for="arrive">Arrive</label>
+        <input type="text" id="arrive" />
+        <label for="depart">Depart</label>
+        <input type="text" id="depart" />
+        <input type="submit" class="modal-close" id="submit" />
+      </form>
     </div>
-    <!-- <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
-    </div> -->
   </div>
- 
-<!-- Modal Structure -->
+
+  <!-- Modal Structure 2-->
+
   <div id="modal2" class="modal">
     <div class="modal-content">
       <ul id="themeplace">
-        
       </ul>
     </div>
   </div>
 
-<div class="container">
-
-  <!-- map -->
-    <div class="row"> 
-        <div class="col s6"> 
-            <div id="map">
-            </div>
+  <div class="container">
+    <!-- title -->
+    <div class="row">
+      <div class="col s6 offset-s3">
+        <div id="title">
         </div>
-        
+      </div>
+
+      <!-- map -->
+
+      <div class="row">
+        <div class="col s6">
+          <div id="map">
+          </div>
+        </div>
+
         <div class="col s3" id="box1" style="display: none">
           <div class="card blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">Day 1</span>
-              <p class="card-content white-text day-box" id="day1" ondrop="drop(event)" ondragover="allowDrop(event)"></p>
-              
+              <p class="card-content white-text day-box" id="day1"
+                ondrop="drop(event)" ondragover="allowDrop(event)"></p>
+
             </div>
-            
+
           </div>
         </div>
         <div class="col s3" id="box2" style="display: none">
           <div class="card blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">Day 2</span>
-              <p class="card-content white-text day-box" id="day2" ondrop="drop(event)" ondragover="allowDrop(event)"></p>
-              
+              <p class="card-content white-text day-box" id="day2"
+                ondrop="drop(event)" ondragover="allowDrop(event)"></p>
+
             </div>
-            
+
           </div>
         </div>
-        <div class="col s3" id="box3"style="display: none">
+        <div class="col s3" id="box3" style="display: none">
           <div class="card blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">Day 3</span>
-              <p class="card-content white-text day-box" id="day3" ondrop="drop(event)" ondragover="allowDrop(event)"></p>
+              <p class="card-content white-text day-box" id="day3"
+                ondrop="drop(event)" ondragover="allowDrop(event)"></p>
             </div>
-            
+
           </div>
         </div>
-        <div class="col s3" id="box4"style="display: none">
+        <div class="col s3" id="box4" style="display: none">
           <div class="card blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">Day 4</span>
-              <p class="card-content white-text day-box" id="day4" ondrop="drop(event)" ondragover="allowDrop(event)"></p>
-            </div>    
+              <p class="card-content white-text day-box" id="day4"
+                ondrop="drop(event)" ondragover="allowDrop(event)"></p>
+            </div>
           </div>
         </div>
-<button id="save">save </button>
-    </div>
-
-    <!-- to do  -->
-    <div class="row">
-    <div class="col s6" id="toDo">
-      <div class="card blue-grey darken-1"  >
-        <div class="card-content white-text">
-          <span class="card-title">To Do</span>          
-        </div>
-        <div class="card-action">
-          <a class="type" value="Sacred">Sacred</a>
-          <a class="type" value="Amusements">Amusements</a>
-          <a class="type" value="Collections">Collections</a>
-          <a class="type" value="Nourishment">Nourishment</a>
-        </div>
-        <p class="card-content white-text"id="places"></p>
-        <button id="more">more</button>
+        <button id="save">save </button>
       </div>
-    </div>
- 
-    <!-- bucket List -->
 
-   
-        <div class="col s6" id = "bucketList">
+      <!-- to do  -->
+      <div class="row">
+        <div class="col s6" id="toDo">
           <div class="card blue-grey darken-1">
-           <div class="card-content white-text">
-             <span class="card-title">Bucket List</span>
-             <p class="card-content white-text" id="bucketText"></p>
-             <button id="schedule">Schedule these</button>
-           </div>
-           
-         </div>
-       </div>
+            <div class="card-content white-text">
+              <span class="card-title">To Do</span>
+            </div>
+            <div class="card-action">
+              <a class="type" value="Sacred">Sacred</a>
+              <a class="type" value="Amusements">Amusements</a>
+              <a class="type" value="Collections">Collections</a>
+              <a class="type" value="Nourishment">Nourishment</a>
+            </div>
+            <p class="card-content white-text" id="places"></p>
+            <button id="more">more</button>
+          </div>
+        </div>
+
+        <!-- bucket List -->
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script>
+        <div class="col s6" id="bucketList">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Bucket List</span>
+              <p class="card-content white-text" id="bucketText"></p>
+              <button id="schedule">Schedule these</button>
+            </div>
+
+          </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+        <script>
       $(document).ready(function(){
         $('.sidenav').sidenav();
       });
 </script>
 
- 
- <script async defer
-    
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjqIlwccRdfx6NRHDBZXYJoy3-NJB4eQk&libraries=places">
+
+        <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjqIlwccRdfx6NRHDBZXYJoy3-NJB4eQk&libraries=places">
     
 </script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
-    <script src="./js/bucket.js"></script>
-<script src="./js/map.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+        <script src="./js/bucket.js"></script>
+        <script src="./js/map.js"></script>
 
-<script src="./js/bucket2.js"></script>
-<script src="./js/bucket3.js"></script>
+        <script src="./js/bucket2.js"></script>
+        <script src="./js/bucket3.js"></script>
 
-</body>
+      </body>
 
-</html>
+    </html>

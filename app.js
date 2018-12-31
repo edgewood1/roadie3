@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 
 app.use(express.static(path.join(__dirname, "public")));
 
+var current = {};
 // app.use(express.static('public'));
 
 // app.use(express.static(__dirname + "public"));
@@ -17,7 +18,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
+  res.sendFile(path.join(__dirname, "/public/bucket.html"));
+});
+
+app.get("/current", function(req, res) {
+  res.send(current);
+});
+
+app.post("/current", function(req, res) {
+  current.place = { place: req.body.place };
+  current.theme = { theme: req.body.theme };
+  console.log(current);
 });
 
 app.listen(3001);

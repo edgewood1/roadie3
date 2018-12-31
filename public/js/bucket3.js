@@ -1,3 +1,17 @@
+// select type
+
+// $(".type").on("click", function(e) {
+//   input = $(this)
+//     .attr("value")
+//     .toLowerCase();
+//   type = null;
+
+//   type = t[input];
+
+//   initMap(pyrmont, type);
+
+// });
+
 var t = [];
 t.sacred = [
   "cemetery",
