@@ -4,7 +4,7 @@ var routes = require("./routes/routes"); // 1
 // app is a large object with a bunch of methods
 var app = express();
 var bodyParser = require("body-parser");
-
+const port = process.env.PORT || 8080;
 app.use(express.static(path.join(__dirname, "public")));
 
 var current = {};
@@ -31,6 +31,6 @@ app.post("/current", function(req, res) {
   console.log(current);
 });
 
-app.listen(3001, function() {
-  console.log("go to 3001");
+app.listen(port, function() {
+  console.log("go to port");
 });
