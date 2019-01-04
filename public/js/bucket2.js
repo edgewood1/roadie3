@@ -13,7 +13,7 @@ $.ajax({
 
 // on load, fill up bucket list
 
-function placeInBLfromDb() {
+function placeInBLfromDb(current) {
   database
     .ref("datum/")
     .child(current.theme)
@@ -25,7 +25,7 @@ function placeInBLfromDb() {
         // Set the variables for highBidder/highPrice equal to the stored values.
         console.log(snapshot);
         bucketList = snapshot.val().bucketList;
-        // console.log(bucketList);
+        console.log(bucketList);
 
         // }
 

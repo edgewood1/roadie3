@@ -31,4 +31,6 @@ app.post("/current", function(req, res) {
   console.log(current);
 });
 
-app.listen(3001);
+app.listen(3001, function() {
+  console.log("go to 3001");
+});
