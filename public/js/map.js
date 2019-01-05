@@ -5,109 +5,13 @@
 // begin process
 
 $(document).ready(function() {
-  // geoCode(place, type);
+  //default place?
+  // current.place = "Durham, NC";
+  // current.type = ["museum"];
+  // geoCode(current);
 });
 
-var place = "Durham, NC",
-  type = ["museum"];
-var totalData, input, newinput, type, map, current;
-
-// on click for selecting place from modal
-
-$("#themeplace").on("click", showDetails);
-
-function showDetails(e) {
-  place = e.target.dataset.name;
-  theme = e.target.dataset.theme;
-  current = {
-    place: place,
-    theme: theme
-  };
-  $.ajax({
-    method: "POST",
-    url: "/current",
-    data: current
-  });
-  console.log(current);
-  geoCode(current);
-  $("#modal2").modal();
-
-  placeInBLfromDb(current);
-}
-
-// on click for create and bucket tab buttons
-
-$("#create").on("click", function(e) {
-  $("#modal1").modal();
-});
-
-$("#place7").on("click", function(e) {
-  // e.preventDefault();
-  $("#themeplace").empty();
-  var theme, place1;
-  database.ref().on(
-    "value",
-    // datum level
-    function(snapshot) {
-      console.log(snapshot.val());
-      // dynamic theme level
-      snapshot.forEach(function(snapshop1) {
-        // place level --
-        snapshop1.forEach(function(snap) {
-          place1 = snap.val().place;
-          theme = snap.key;
-          var message = theme + " : " + place1;
-          var li = $("<li>");
-          var a = $("<a>")
-            .attr({
-              class: "place2",
-              "data-name": place1,
-              "data-theme": theme
-            })
-            .text(message);
-          li.append(a);
-          $("#themeplace").append(li);
-        });
-      });
-    },
-    function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    }
-  );
-  $("#modal2").modal();
-});
-
-// enter new place --
-
-var theme,
-  datum = {};
-$("#submit").on("click", function(e) {
-  e.preventDefault();
-
-  place = $("#place")
-    .val()
-    .trim();
-  theme = $("#theme")
-    .val()
-    .trim();
-  place = { place: place };
-  datum[theme] = place;
-
-  // add the new place to database
-
-  database.ref().on(
-    "value",
-    function(snapshot) {
-      database.ref().update({ datum });
-    },
-    function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    }
-  );
-
-  console.log(place);
-  geoCode(place);
-});
+var totalData, input, newinput, map;
 
 // 1. geoCode
 

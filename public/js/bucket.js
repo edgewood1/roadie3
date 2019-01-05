@@ -1,15 +1,6 @@
-/// on LOAD - check for bucket list values
 var bucketList = [],
   y = 0;
-var current = {};
-$.ajax({
-  method: "GET",
-  url: "/current",
-  function(data) {
-    current = data;
-    console.log(current);
-  }
-});
+// var current = {};
 
 // on load, fill up bucket list
 
@@ -49,6 +40,8 @@ function placeInBLfromDb(current) {
     li.text(e);
     bucket.append(li);
   });
+  $("#bucketList").css("display", "inline");
+  $("#toDo").css("display", "inline");
 }
 
 // on click, place in bucketList
@@ -191,3 +184,18 @@ function save() {
     });
   readDayBoxes();
 }
+var current = {};
+/// on LOAD - check for bucket list values
+// $(window).on("load", function() {
+//   console.log("All assets are loaded");
+
+//   $.ajax({
+//     method: "GET",
+//     url: "/current",
+//     function(current) {
+//       console.log(current);
+//       geoCode(current);
+//       placeInBLfromDb(current);
+//     }
+//   });
+// });
