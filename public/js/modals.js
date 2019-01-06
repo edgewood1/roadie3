@@ -8,8 +8,6 @@ $("#create").on("click", function(e) {
   $("#modal1").modal();
 });
 
-// CREATE NEW PLACE - MODAL 1
-
 $("#submit").on("click", function(e) {
   e.preventDefault();
 
@@ -100,7 +98,7 @@ function storeAjax(e) {
   $("#modal2").modal();
 
   geoCode(current);
-  placeInBLfromDb(current);
+  getDataForBucketList(current);
 }
 // function openBucket() {
 //   console.log(window.location.pathname);

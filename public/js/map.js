@@ -113,7 +113,7 @@ function createMarkers(places) {
     var li = $("<li>");
     li.attr("value", place.name);
     // if name clicked, move to bucketList
-    li.click(placeInBucketList);
+    li.click(saveNewBucketListItem);
     li.text(place.name);
     placesList.append(li);
 
