@@ -1,7 +1,3 @@
-var theme;
-var datum,
-  current = {};
-
 // CREATE NEW PLACE -  MODAL1
 
 $("#create").on("click", function(e) {
@@ -10,50 +6,45 @@ $("#create").on("click", function(e) {
 
 $("#submit").on("click", function(e) {
   e.preventDefault();
-
-  place = $("#place")
+  var datum={}
+ 
+  var place = $("#place")
     .val()
     .trim();
-  theme = $("#theme")
+  var theme = $("#theme")
     .val()
     .trim();
-  place = { place: place };
-  datum[theme] = place;
+  
+ 
+  datum = {
+    theme: theme,
+    place: place, 
+    bucketList: [],
+    events: [] 
+  }
 
-  // add the new place to database
+  database.ref(theme+"/").update(datum)
 
-  database.ref().on(
-    "value",
-    function(snapshot) {
-      database.ref().update({ datum });
-    },
-    function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    }
-  );
-
-  console.log(place);
-  geoCode(place);
+  postAjax(datum)
+  geoCode(datum)
 });
 
 // SELECT OLD PLACE - MODAL2
 
-$("#place7").on("click", getSavedThemes);
+$("#place7").on("click", createPlaceModal);
 
-function getSavedThemes() {
-  console.log("hit");
-  // e.preventDefault();
+function createPlaceModal() {
+ 
   $("#themeplace").empty();
   var theme, place1;
   database.ref().on(
     "value",
-    // datum level
+    
     function(snapshot) {
       console.log(snapshot.val());
-      // dynamic theme level
-      snapshot.forEach(function(snapshop1) {
-        // place level --
-        snapshop1.forEach(function(snap) {
+      
+      snapshot.forEach(function(snap) {
+        
           place1 = snap.val().place;
           theme = snap.key;
           var message = theme + " : " + place1;
@@ -68,45 +59,72 @@ function getSavedThemes() {
             .text(message);
           li.append(a);
           $("#themeplace").append(li);
-        });
+        
       });
     },
     function(errorObject) {
       console.log("The read failed: " + errorObject.code);
     }
   );
+  //opens modal
   $("#modal2").modal();
 }
 
 // SELECT THEME IN PLACES MODAL2
 
-$("#themeplace").on("click", storeAjax);
+$("#themeplace").on("click", selectNewPlace);
 
-function storeAjax(e) {
-  //   if (window.location.pathname === "/") {
-  //     window.location += "bucket.html";
-  //   }
-  current.place = e.target.dataset.name;
-  current.theme = e.target.dataset.theme;
-  console.log("hit");
-  $.ajax({
-    method: "POST",
-    url: "/current",
-    data: current
-  });
+// MODAL 2 - SELECT NEW PLACE
 
+function selectNewPlace(e) {
+  var current = convertToCurrent(e)
+  current = getDataForBucketList(current) 
+  printBucketList(current)
+  postAjax(current)
+  geoCode(current)
+}
+
+function addToBucketList(e) {
+  var itemClicked = check(e)
+ 
+  var promise = new Promise(function(resolve, reject) {
+    getCurrent(resolve);
+  })
+  promise.then(function(data) {
+    data = pushBucketList(itemClicked, data)
+    postAjax(data)
+    saveNewBucketListItem(data)
+    current = getDataForBucketList(data)
+    printBucketList(data)
+
+  })
+}
+
+function convertToCurrent(e) {
+
+  var current = {
+    place : e.target.dataset.name,
+    theme : e.target.dataset.theme,
+  }
+  // closes modal
   $("#modal2").modal();
 
-  geoCode(current);
-  getDataForBucketList(current);
+  return current;
+
 }
-// function openBucket() {
-//   console.log(window.location.pathname);
-//   if (window.location.pathname == "/") {
-//     window.location += "bucket.html";
-//     console.log("open");
-//   }
 
-//   geoCode(current);
+function postAjax(current) {
 
-//   placeInBLfromDb(current);
+  $.post( "/current", current, function(data) {
+     
+      console.log("success", data)
+    
+  }).fail(function(error) {
+    console.log("error ", error);
+  })
+
+  // closes modal
+  $("#modal2").modal();
+  $("body").css("overflow", "auto");
+ 
+}

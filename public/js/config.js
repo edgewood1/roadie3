@@ -1,3 +1,9 @@
+// variables defined
+
+var bucketList = [],
+  y = 0;
+
+
 // drag and drop / firebase config
 
 function allowDrop(ev) {

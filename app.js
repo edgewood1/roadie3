@@ -22,12 +22,21 @@ app.get("/", function(req, res) {
 });
 
 app.get("/current", function(req, res) {
+  console.log(req.body)
   res.send(current);
 });
 
 app.post("/current", function(req, res) {
-  current.place = { place: req.body.place };
-  current.theme = { theme: req.body.theme };
+  console.log("post! ", req.body)
+  current.place = req.body.place;
+  current.theme = req.body.theme;
+  if (req.body.bucketList) {
+  current.bucketList = req.body.bucketList;
+  }
+  if (req.body.events) {
+  current.events = req.body.events;
+  }
+  
   console.log(current);
 });
 

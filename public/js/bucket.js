@@ -1,27 +1,72 @@
 // 1. config -
 
-var bucketList = [],
-  y = 0;
+ 
+function check(e) {
+  // get item pressed
+  var itemClicked = e.target.textContent
+
+  // var itemClicked = $(this).attr("value");
+  console.log(itemClicked)
+  // loop through items in bucketlist
+  if (bucketList.includes(itemClicked)){
+       return false;
+    } else {
+      return itemClicked    
+    }
+}
+
+function pushBucketList(itemClicked, current) {
+  
+  if (current.bucketList == undefined) {
+    console.log("no bucket")
+    current.bucketList = [itemClicked]
+  } else {
+    console.log("item added")
+  current["bucketList"].push(itemClicked);
+  }
+  return current;
+
+}
+
+  // add new item to database
+
+function saveNewBucketListItem(current) {
+  
+  database
+    .ref(current.theme + "/bucketList")
+
+    .update(
+      current.bucketList
+    );
+
+}
 
 function getDataForBucketList(current) {
+  
+  var data ={}
   database
-    .ref("datum/")
-    .child(current.theme)
+    .ref(current.theme+"/")
     .on(
       "value",
       function(snapshot) {
-        bucketList = snapshot.val().bucketList;
-        printBucketList(bucketList);
+        current = snapshot.val()
       },
       function(errorObject) {
         console.log("The read failed: " + errorObject.code);
       }
-    );
+    )
+  return current
 }
-function printBucketList(bucketList) {
+
+
+function printBucketList(current) {
   var bucket = $("#bucketText");
   bucket.empty();
-  bucketList.forEach(function(e) {
+console.log(current)
+  if (current.bucketList == undefined) {
+    console.log("no bucketlist")
+  } else {
+  current["bucketList"].forEach(function(e) {
     console.log(e);
 
     var li = $("<li>");
@@ -36,43 +81,24 @@ function printBucketList(bucketList) {
     li.text(e);
     bucket.append(li);
   });
+  }
   $("#bucketList").css("display", "inline");
   $("#toDo").css("display", "inline");
-}
-
-// on click, place in bucketList
-
-function saveNewBucketListItem(e) {
-  console.log(e);
-  // get item clicked and target location
-  var itemClicked = $(this).attr("value");
-
-  // add new item to database
-
-  bucketList.push(itemClicked);
-
-  database
-    .ref("datum/")
-    .child(current.theme)
-    .update({
-      bucketList: bucketList
-    });
-
-  getDataForBucketList(current);
-  // if doesn't work, call getCurrent
+  return current
+  
 }
 
 var current = {};
-/// on LOAD - check for bucket list values
-// $(window).on("load", function() {
-//   console.log("All assets are loaded");
 
-function getCurrent(callback) {
-  $.ajax({
+function getCurrent(resolve) {
+  console.log("hit ajax")
+  return $.ajax({
     method: "GET",
     url: "/current",
-    function(current) {
-      return current;
+    success: function(current) {
+      resolve(current)
     }
   });
 }
+
+

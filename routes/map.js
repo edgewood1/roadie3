@@ -23,7 +23,7 @@ function map(data) {
     { location: pyrmont, radius: 2000, type: [type] },
     function(results, status, pagination) {
       if (status !== "OK") return;
-      console.log(results);
+ 
       return (results)
 
     }

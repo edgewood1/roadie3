@@ -6,9 +6,9 @@
 
 $(document).ready(function() {
   //default place?
-  // current.place = "Durham, NC";
-  // current.type = ["museum"];
-  // geoCode(current);
+  current.place = "Durham, NC";
+  current.type = ["museum"];
+  geoCode(current);
 });
 
 var totalData, input, newinput, map;
@@ -101,24 +101,26 @@ function createMarkers(places) {
       anchor: new google.maps.Point(17, 34),
       scaledSize: new google.maps.Size(25, 25)
     };
-    // console.log(place);
+  
     var marker = new google.maps.Marker({
       map: map,
       icon: image,
       title: place.name,
       position: place.geometry.location
     });
-
+ 
     // gets the place name and lists it on the "to do" list
     var li = $("<li>");
     li.attr("value", place.name);
     // if name clicked, move to bucketList
-    li.click(saveNewBucketListItem);
+    // li.click(saveNewBucketListItem);
+    li.click(addToBucketList);
     li.text(place.name);
     placesList.append(li);
 
     bounds.extend(place.geometry.location);
   }
-
+  $("#bucketList").css("display", "inline");
+  $("#toDo").css("display", "inline");
   map.fitBounds(bounds);
 }
