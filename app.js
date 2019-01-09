@@ -1,6 +1,6 @@
 var express = require("express");
 var path = require("path");
-var routes = require("./routes/routes"); // 1
+// var routes = require("./routes/routes"); // 1
 // app is a large object with a bunch of methods
 var app = express();
 var bodyParser = require("body-parser");
@@ -12,7 +12,7 @@ var current = {};
 
 // app.use(express.static(__dirname + "public"));
 
-app.use(routes);
+// app.use(routes);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
