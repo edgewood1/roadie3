@@ -4,7 +4,11 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "dotenv": "^6.2.0",
+    "dragula": "^3.7.2",
     "express": "^4.16.4",
+    "firebase": "^5.7.2",
+    "firebase-admin": "^6.5.0",
     "request": "^2.88.0",
     "url": "^0.11.0"
   },

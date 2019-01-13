@@ -5,7 +5,7 @@ $(document).ready(function() {
   $(".dropdown-trigger").dropdown();
   $(".collapsible").collapsible();
 
-  geoCode(place);
+  createMap(place);
 });
 
 $("#submit").on("click", function(e) {

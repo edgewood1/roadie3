@@ -3,39 +3,59 @@
 // geocode, draw map, markers
 
 // begin process
+// var current = {}
 
 $(document).ready(function() {
   //default place?
   current.place = "Durham, NC";
   current.type = ["museum"];
-  geoCode(current);
+  current.pyrmont = {}
+ 
+  createMap(current)
+  // geoCode(current);
 });
 
 var totalData, input, newinput, map;
-
+var x
 // 1. geoCode
 
-var x, pyrmont;
+function createMap(current) {
+     current = geoCode(current)
+     current.then(function(data) {
+      return initMap(data);
+     }).then(function(data) {
+      googlePlaces(data)
+     })
+}
+
+
 function geoCode(current) {
+  return new Promise(function(resolve, reject) {
+  if (current.pyrmont == undefined) {
+    current.pyrmont == {}
+  }
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode({ address: current.place }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       lat = parseFloat(results[0].geometry.location.lat());
       long = parseFloat(results[0].geometry.location.lng());
-      pyrmont = new google.maps.LatLng(lat, long);
-
-      initMap(pyrmont, current);
+      current.pyrmont = new google.maps.LatLng(lat, long);
+   
+      resolve(current)
+      // initMap(pyrmont, current);
     } else {
       alert("Something got wrong " + status);
     }
   });
+})
 }
 
 // 2. draw map
 
-function initMap(pyrmont, current) {
+function initMap(current) {
+  return new Promise(function(resolve, reject) {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: pyrmont,
+    center: current.pyrmont,
     zoom: 25
   });
   map.setOptions({ scrollwheel: true });
@@ -58,8 +78,13 @@ function initMap(pyrmont, current) {
   // Set the data fields to return when the user selects a place.
   autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
   ///////////////////////////////////////////
+  
+  resolve(current);
+})
+}
 
-  // Create the places service.
+function googlePlaces(current) {
+  // Create the places service. 
   var service = new google.maps.places.PlacesService(map);
   var getNextPage = null;
   var moreButton = document.getElementById("more");
@@ -70,12 +95,13 @@ function initMap(pyrmont, current) {
 
   // Perform a nearby search.
   service.nearbySearch(
-    { location: pyrmont, radius: 2000, type: [current.type] },
+    { location: current.pyrmont, radius: 2000, type: [current.type] },
     function(results, status, pagination) {
       if (status !== "OK") return;
-      console.log(results);
+ 
+      current.places = results
 
-      createMarkers(results);
+      createMarkers(current);
       moreButton.disabled = !pagination.hasNextPage;
       getNextPage =
         pagination.hasNextPage &&
@@ -88,12 +114,14 @@ function initMap(pyrmont, current) {
 
 // 3. create markers
 
-function createMarkers(places) {
+function createMarkers(current) {
   $("#places").empty();
   var bounds = new google.maps.LatLngBounds();
-  var placesList = $("#places");
+  placesList = $("#places");
   placesList.empty();
-  for (var i = 0, place; (place = places[i]); i++) {
+
+  // the loop
+  for (var i = 0, place; (place = current.places[i]); i++) {
     var image = {
       url: place.icon,
       size: new google.maps.Size(71, 71),
@@ -109,18 +137,23 @@ function createMarkers(places) {
       position: place.geometry.location
     });
  
-    // gets the place name and lists it on the "to do" list
-    var li = $("<li>");
-    li.attr("value", place.name);
-    // if name clicked, move to bucketList
-    // li.click(saveNewBucketListItem);
-    li.click(addToBucketList);
-    li.text(place.name);
-    placesList.append(li);
+    if (current.bucketList) {
+      if (!current["bucketList"].includes(current.places[i].name)) {
+ 
+        printToDo(i, placesList, place)  
+      }
+    
+    } else {
+ 
+      printToDo(i, placesList, place)
 
+    } 
     bounds.extend(place.geometry.location);
   }
   $("#bucketList").css("display", "inline");
   $("#toDo").css("display", "inline");
   map.fitBounds(bounds);
 }
+
+
+

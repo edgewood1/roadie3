@@ -1,11 +1,26 @@
 var express = require("express");
 var path = require("path");
+// var dragula = require("dragula/dragula")
+
+require('dotenv').config();
 // var routes = require("./routes/routes"); // 1
 // app is a large object with a bunch of methods
 var app = express();
+// app.use(dragula())
 var bodyParser = require("body-parser");
-const port = 3005 || process.env.PORT;
+const port =  process.env.PORT ||3005 ;
 app.use(express.static(path.join(__dirname, "public")));
+ 
+// var admin = require("firebase-admin");
+
+// var serviceAccount = require("./serviceActKey.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://fir-counter-56e8f.firebaseio.com"
+// });
+
+ 
 
 var current = {};
 // app.use(express.static('public'));
@@ -18,7 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.get("/current", function(req, res) {
@@ -36,8 +51,14 @@ app.post("/current", function(req, res) {
   if (req.body.events) {
   current.events = req.body.events;
   }
-  
+  if (req.body.pyrmont) {
+    current.pyrmont = req.body.pyrmont;
+  }
+ 
+ 
   console.log(current);
+  res.send(current)
+
 });
 
 app.listen(port, function() {

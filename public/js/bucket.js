@@ -1,44 +1,53 @@
 // 1. config -
-
+var current = {};
  
-function check(e) {
+function check(current) {
   // get item pressed
-  var itemClicked = e.target.textContent
+  console.log(itemClicked)
+  // var itemClicked = e.target.textContent
 
   // var itemClicked = $(this).attr("value");
-  console.log(itemClicked)
+  // console.log(itemClicked)
   // loop through items in bucketlist
-  if (bucketList.includes(itemClicked)){
-       return false;
-    } else {
-      return itemClicked    
+  console.log(current["bucketList"])
+  if (!current["bucketList"].includes(current["bucketText"])){
+      
+      return current;
     }
 }
 
-function pushBucketList(itemClicked, current) {
+function pushBucketList(current) {
+
+  var newArray = current["bucketList"].filter(function (el) {
+    if (el !=null || el != "") {return el }
+  });
+  current["bucketList"] = newArray; 
   
   if (current.bucketList == undefined) {
-    console.log("no bucket")
-    current.bucketList = [itemClicked]
+    
+    current.bucketList = [current.bucketText]
   } else {
-    console.log("item added")
-  current["bucketList"].push(itemClicked);
+     
+    if (!current["bucketList"].includes(current["bucketText"])) {
+  current["bucketList"].push(current["bucketText"]);
+    }
   }
+
+  
   return current;
 
 }
 
   // add new item to database
 
-function saveNewBucketListItem(current) {
-  
+function saveBucketList(current) {
+  console.log(current)
   database
-    .ref(current.theme + "/bucketList")
-
-    .update(
-      current.bucketList
-    );
-
+    .ref(current.theme + "/")
+    .update({
+      bucketList: current.bucketList
+    }) 
+    return current;
 }
 
 function getDataForBucketList(current) {
@@ -59,15 +68,44 @@ function getDataForBucketList(current) {
 }
 
 
+// ------------
+// print
+// ----------- from map>
+
+function printToDo(i, placesList, place) {
+  // gets the place name and lists it on the "to do" list
+  var li = $("<li>");
+  // li.attr("value", place.name);
+  
+  li.attr({
+    value: place.name,
+    draggable: true,
+    id: "a" + i,
+    ondragstart: "drag(event)", 
+    padding: "2em",
+    margin: "0 2em 2em 0",
+    // "box-shadow": "1px 1px 1px rgba(0, 0, 0, 0.3)",
+    // "border-radius": "100px",
+    border: "2px solid #ececec",
+    background: "#F7F7F7",
+    transition: "all .5s ease",
+  });
+  // if name clicked, move to bucketList
+  // li.click(saveNewBucketListItem);
+  // li.click(addToBucketList);
+  li.text(place.name);
+  placesList.append(li);
+}
+
 function printBucketList(current) {
   var bucket = $("#bucketText");
   bucket.empty();
-console.log(current)
+ 
   if (current.bucketList == undefined) {
-    console.log("no bucketlist")
+    
   } else {
   current["bucketList"].forEach(function(e) {
-    console.log(e);
+    
 
     var li = $("<li>");
     y++;
@@ -88,10 +126,17 @@ console.log(current)
   
 }
 
-var current = {};
 
-function getCurrent(resolve) {
-  console.log("hit ajax")
+// ---------------------- current
+//
+//
+
+function upDateCurrent(data) {
+  // Current should contain t
+}
+
+function getAjax(resolve) {
+   
   return $.ajax({
     method: "GET",
     url: "/current",
@@ -100,5 +145,18 @@ function getCurrent(resolve) {
     }
   });
 }
-
+function postAjax(current) {
+console.log(current)
+  $.post( "/current", current, function(data) {
+      console.log("success", data)
+      return data;
+  }).fail(function(error) {
+    console.log("error ", error);
+  })
+  // closes modal
+  $("#modal2").modal();
+  $("#title").text("Destination: " + current.place +"  ~ Theme: " + current.theme + " bl " ) 
+  $("body").css("overflow", "auto");
+  
+}
 

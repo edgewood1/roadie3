@@ -1,0 +1,39 @@
+
+
+  <!DOCTYPE HTML>
+<html>
+<head>
+<style>
+
+.box {
+    width: 50px;
+    height: 60px;
+}
+ 
+</style>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+<script>
+$(document).ready(function(){
+ 
+    function $(id) {
+return document.getElementById(id);
+}
+    dragula([$('#bucketList2'), $('#toDo2')])
+  });
+  
+
+
+
+</script>
+</head>
+<body>
+
+<div class="box" id=#bucketList2></div>>
+
+<!-- // empty container that accepts drops -->
+
+<div class="box" id="#toDo2"></div>>
+
+</body>
+</html>

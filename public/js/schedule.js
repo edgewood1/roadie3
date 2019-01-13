@@ -1,12 +1,42 @@
 var days = 3;
 var target, today, li, y, line;
-var schedule = $("#schedule");
-schedule.on("click", schedule2);
+ 
+$("#schedule").on("click", showDayBoxes);
+
+$("#save").on("click", readDayBoxesFromScreen);
+var z = [];
+
+$("#backToDo").on("click", returnToDo);
+
+function returnToDo() {
+  $("#daily").css("display", "none");
+
+  $("#save").css("display", "none");
+  $("#backToDo").css("display", "none");
+
+  $("#toDo")
+    .show()
+    .addClass("col s0");
+}
+
 
 // schedule days
-function schedule2() {
+function showDayBoxes() {
+  // get current with news items - 
+var promise3 = new Promise(function(resolve, reject) {
+  getAjax(resolve)
+}).then(function(current){
+
+  console.log(current)
+
+  // SAVE BUCKETLIST TO DB!!!
+  saveBucketList(current)
+    
   // add the day scheduler on -
+  $("#daily").css("display", "inline");
+
   $("#save").css("display", "inline");
+  $("#backToDo").css("display", "inline");
 
   $("#toDo")
     .hide()
@@ -15,24 +45,30 @@ function schedule2() {
   for (x = 0; x <= days; x++) {
     $("#box" + x).css("display", "inline");
   }
-  readDayBoxes();
+  readDayBoxesFromDb(current);
+})
+  
+
 }
 
-function readDayBoxes() {
+// reads events from database
+// posts them into the dayboxes
+
+function readDayBoxesFromDb(current) {
+  console.log(current)
   $(".day-box").empty();
+
   database
-    .ref("datum/")
-    .child(current.theme)
+    .ref(current.theme+"/")
     .on(
       "value",
       function(snapshot) {
-        // If Firebase has a highPrice and highBidder stored, update our client-side variables
-        // if (snapshot.child("now").exists()) {
-        // Set the variables for highBidder/highPrice equal to the stored values.
+        console.log(snapshot.val())
+ 
         var events = snapshot.val().events;
-        console.log(events);
+      
         day = Object.keys(events);
-        console.log(day);
+        
         for (var a = 0; a < day.length; a++) {
           // day = Object.keys
           // day1
@@ -42,7 +78,13 @@ function readDayBoxes() {
 
           // get now.day1 from db snapshot
           var today = events[day[a]];
-          console.log(today); // an array
+
+          printDayBox(today) 
+      }
+    })
+  }
+      
+  function printDayBox(today) {
 
           // create an li element with this now.day
 
@@ -51,14 +93,17 @@ function readDayBoxes() {
           for (var x = 0; x <= today.length; x++) {
             // insert now.day1[0] into li tag
             if (today[x]) {
+            //  today = (today[x].substring(0, 10) + "...");
+
               line = $("<li>").text(today[x]);
               line.attr({
                 value: today[x],
                 draggable: true,
                 id: "a" + x,
-                ondragstart: "drag(event)"
+                ondragstart: "drag(event)",
+                
               });
-              console.log("what we will print " + today[x]);
+         
 
               // add it to id = day1
               target.append(line);
@@ -69,23 +114,20 @@ function readDayBoxes() {
         // }
 
         // If any errors are experienced, log them to console.
-      },
-      function(errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      }
-    );
-}
+    //   },
+    //   function(errorObject) {
+    //     console.log("The read failed: " + errorObject.code);
+    //   }
+    // ;
+// }
 
-/// save daily events
+/// READ and SAVE day boxes
 
-$("#save").on("click", save);
-var z = [];
-
-function save() {
+function readDayBoxesFromScreen() {
+ 
   days = 3;
   var events = {};
-  console.log(events);
-
+ 
   // loop through 3 days
   for (var z = 1; z <= days; z++) {
     // create an object day.1.
@@ -99,12 +141,16 @@ function save() {
       })
       .get();
   }
+console.log("read: ", events)
+saveDayBoxes(events)
+}
 
+function saveDayBoxes(events) {
+  console.log(events)
   database
-    .ref("datum/")
-    .child(current.theme)
+    .ref(current.theme+"/")
     .update({
       events: events
     });
-  readDayBoxes();
+  readDayBoxesFromDb();
 }
