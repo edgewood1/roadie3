@@ -1,12 +1,20 @@
 var days = 3;
 var target, today, li, y, line;
- 
-$("#schedule").on("click", showDayBoxes);
 
-$("#save").on("click", readDayBoxesFromScreen);
-var z = [];
+// on click -- 
 
 $("#backToDo").on("click", returnToDo);
+ 
+$("#schedule").on("click", {param:readOldEvents}, getCurrent);
+
+$("#save").on("click", {param:readNewEvents}, getCurrent);
+var z = [];
+
+function saveEvents() {
+
+}
+
+// daily boxes disappear
 
 function returnToDo() {
   $("#daily").css("display", "none");
@@ -19,114 +27,73 @@ function returnToDo() {
     .addClass("col s0");
 }
 
-
-// schedule days
-function showDayBoxes() {
-  // get current with news items - 
-var promise3 = new Promise(function(resolve, reject) {
-  getAjax(resolve)
-}).then(function(current){
-
-  console.log(current)
-
-  // SAVE BUCKETLIST TO DB!!!
-  saveBucketList(current)
-    
-  // add the day scheduler on -
-  $("#daily").css("display", "inline");
-
-  $("#save").css("display", "inline");
-  $("#backToDo").css("display", "inline");
-
-  $("#toDo")
-    .hide()
-    .addClass("col s0");
-
-  for (x = 0; x <= days; x++) {
-    $("#box" + x).css("display", "inline");
-  }
-  readDayBoxesFromDb(current);
-})
-  
-
+// get Current bucket list - why? 
+function getCurrent(event) {
+  var callback = event.data.param
+  new Promise(function(resolve, reject) {
+    getAjax(resolve)
+  }).then(function(current){
+  current = cleanBucketList(current) 
+  callback(current)
+  })
 }
 
-// reads events from database
-// posts them into the dayboxes
-
-function readDayBoxesFromDb(current) {
-  console.log(current)
-  $(".day-box").empty();
-
-  database
-    .ref(current.theme+"/")
-    .on(
-      "value",
-      function(snapshot) {
-        console.log(snapshot.val())
+function readOldEvents(current) {
+  var events = current.events
+  if (events) {
+    console.log("evnets'")
+  day = Object.keys(events);        
+    for (var a = 0; a < day.length; a++) {
+      target = $("#" + day[a]);
+      var today = events[day[a]];
+      printDayBox(today) 
+     }
+    } else {
+      console.log("show events")
+      showEvents()
+    }
+}
  
-        var events = snapshot.val().events;
+ function printDayBox(today) {
+
+    for (var x = 0; x <= today.length; x++) {
+      // insert now.day1[0] into li tag
+      if (today[x]) {
       
-        day = Object.keys(events);
-        
-        for (var a = 0; a < day.length; a++) {
-          // day = Object.keys
-          // day1
-
-          // target> id = day1
-          target = $("#" + day[a]);
-
-          // get now.day1 from db snapshot
-          var today = events[day[a]];
-
-          printDayBox(today) 
-      }
-    })
+        line = $("<li>").text(today[x]);
+        line.attr({
+          value: today[x],
+          draggable: true,
+          id: "a" + x,
+          ondragstart: "drag(event)",
+        });
+        target.append(line);
+      }  
+      // repeat for id=day2
+    }
+    showEvents()
   }
-      
-  function printDayBox(today) {
 
-          // create an li element with this now.day
-
-          // loop through items of now.day1
-          // console.log(today.length);
-          for (var x = 0; x <= today.length; x++) {
-            // insert now.day1[0] into li tag
-            if (today[x]) {
-            //  today = (today[x].substring(0, 10) + "...");
-
-              line = $("<li>").text(today[x]);
-              line.attr({
-                value: today[x],
-                draggable: true,
-                id: "a" + x,
-                ondragstart: "drag(event)",
-                
-              });
-         
-
-              // add it to id = day1
-              target.append(line);
-            }
-            // repeat for id=day2
-          }
-        }
-        // }
-
-        // If any errors are experienced, log them to console.
-    //   },
-    //   function(errorObject) {
-    //     console.log("The read failed: " + errorObject.code);
-    //   }
-    // ;
-// }
+  function showEvents() {
+    console.log("visible!!")
+    $("#daily").css("display", "inline");
+    $("#save").css("display", "inline");
+    $("#backToDo").css("display", "inline");
+    $("#toDo")
+      .hide()
+      .addClass("col s0");
+    for (x = 0; x <= days; x++) {
+      $("#box" + x).css("display", "inline");
+    }
+  }
 
 /// READ and SAVE day boxes
 
-function readDayBoxesFromScreen() {
+function readNewEvents(current) {
  
   days = 3;
   var events = {};
+  var eventsArr = [];
  
   // loop through 3 days
   for (var z = 1; z <= days; z++) {
@@ -141,16 +108,30 @@ function readDayBoxesFromScreen() {
       })
       .get();
   }
+  for (x in events) {
+    events[x].forEach(function(item) {
+      eventsArr.push(item)
+    })
+  }
+  events.eventsArr = eventsArr;
 console.log("read: ", events)
-saveDayBoxes(events)
+current.events = events
+saveEvents(current)
 }
 
-function saveDayBoxes(events) {
-  console.log(events)
+function saveEvents(current) {
+
+  // new Promise(function(resolve, reject) {
+  //   getAjax(resolve)
+  // }).then(function(current) {
+
+  
+  console.log(current)
   database
     .ref(current.theme+"/")
     .update({
-      events: events
+      events: current.events
     });
-  readDayBoxesFromDb();
+  // readDayBoxesFromDb(current);
+  // })
 }

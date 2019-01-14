@@ -5,6 +5,10 @@ $("#create").on("click", function(e) {
   $("#modal1").modal();
 });
 
+$("#help").on("click", function(e) {
+  $("#modal3").modal();
+})
+
 $("#submit").on("click", modalToDB)
 
 function modalToDB(e) {
@@ -33,11 +37,9 @@ function modalToDB(e) {
 
 // SELECT OLD PLACE - MODAL2
 
-$("#place7").on("click", createPlaceModal);
-
-function createPlaceModal() {
+$("#place7").on("click", function createPlaceModal() {
   $("#daily").css("display", "none");
-
+  $("#modal2").modal();
   $("#themeplace").empty();
   var theme, place1;
   database.ref().on(
@@ -67,13 +69,13 @@ function createPlaceModal() {
     }
   );
   //opens modal
-  $("#modal2").modal();
-}
+  // $("#modal2").modal();
+})
 
 // SELECT THEME IN PLACES MODAL2
 $("#themeplace").on("click", selectNewPlace);
 
-
+// create current
 
 function convertToCurrent(e) {
   var current = {

@@ -8,6 +8,7 @@
 $(document).ready(function() {
   //default place?
   current.place = "Durham, NC";
+  current.bucketList = [];
   current.type = ["museum"];
   current.pyrmont = {}
  
@@ -20,6 +21,7 @@ var x
 // 1. geoCode
 
 function createMap(current) {
+  console.log(current)
      current = geoCode(current)
      current.then(function(data) {
       return initMap(data);
@@ -86,6 +88,9 @@ function initMap(current) {
 function googlePlaces(current) {
   // Create the places service. 
   var service = new google.maps.places.PlacesService(map);
+  current.service = service; 
+
+  // more 
   var getNextPage = null;
   var moreButton = document.getElementById("more");
   moreButton.onclick = function() {
@@ -102,6 +107,7 @@ function googlePlaces(current) {
       current.places = results
 
       createMarkers(current);
+
       moreButton.disabled = !pagination.hasNextPage;
       getNextPage =
         pagination.hasNextPage &&
@@ -110,11 +116,13 @@ function googlePlaces(current) {
         };
     }
   );
+  // add resolve? 
 }
 
 // 3. create markers
 
 function createMarkers(current) {
+  console.log(current)
   $("#places").empty();
   var bounds = new google.maps.LatLngBounds();
   placesList = $("#places");
@@ -136,18 +144,23 @@ function createMarkers(current) {
       title: place.name,
       position: place.geometry.location
     });
- 
-    if (current.bucketList) {
-      if (!current["bucketList"].includes(current.places[i].name)) {
- 
-        printToDo(i, placesList, place)  
+    var events = current["events"]
+    console.log("bucketList: " + current["bucketList"]+ "  " + " name: ", current.places[i].name)
+    if (current.bucketList && events) {
+      
+      if ((!current["bucketList"].includes(current.places[i].name)) && (!events["eventsArr"].includes(current.places[i].name))) {
+    // placesList = location
+      // loop #
+      // place - indiviual place
+
+        printToDo(i, placesList, place, current)  
       }
     
-    } else {
- 
-      printToDo(i, placesList, place)
-
-    } 
+    } else if (!events) {
+      if (!current["bucketList"].includes(current.places[i].name)) {
+        printToDo(i, placesList, place, current)  
+      }
+    }
     bounds.extend(place.geometry.location);
   }
   $("#bucketList").css("display", "inline");

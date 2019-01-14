@@ -54,6 +54,7 @@ app.post("/current", function(req, res) {
   if (req.body.pyrmont) {
     current.pyrmont = req.body.pyrmont;
   }
+
  
  
   console.log(current);

@@ -1,47 +1,64 @@
 // 1. config -
 var current = {};
  
-function check(current) {
-  // get item pressed
-  console.log(itemClicked)
-  // var itemClicked = e.target.textContent
-
-  // var itemClicked = $(this).attr("value");
-  // console.log(itemClicked)
-  // loop through items in bucketlist
-  console.log(current["bucketList"])
-  if (!current["bucketList"].includes(current["bucketText"])){
-      
-      return current;
-    }
-}
-
-function pushBucketList(current) {
-
-  var newArray = current["bucketList"].filter(function (el) {
-    if (el !=null || el != "") {return el }
-  });
-  current["bucketList"] = newArray; 
-  
+ function pushBucketList(current) {
   if (current.bucketList == undefined) {
-    
-    current.bucketList = [current.bucketText]
-  } else {
-     
-    if (!current["bucketList"].includes(current["bucketText"])) {
+      current.bucketList = [current.bucketText]
+  } else if (!current["bucketList"].includes(current["bucketText"])) {
   current["bucketList"].push(current["bucketText"]);
     }
-  }
-
-  
   return current;
+}
 
+function cleanBucketList(current) {
+  console.log("cleanBucket! ", current)
+  var count = 0
+  var events = current["events"]
+  var bucketList = current["bucketList"]
+
+  if (bucketList) {
+  // remove null from bucketList
+  var newArray = current["bucketList"].filter(function (el) {
+    if (el !=null || el != "") {
+      count ++; 
+      return el }
+  });
+
+  current["bucketList"] = newArray; 
+}
+
+ // events Clean Up
+
+ if (events) { 
+   bucketList.forEach(function(elem, item) {
+    console.log("events Array - ", events["eventsArr"])
+    if (events["eventsArr"].includes(elem)){
+      console.log(elem + "is in the events array")
+      count ++
+      bucketList[item] = null;
+    }
+  })
+}
+
+if (bucketList) {
+// cleann again
+  var newArray = current["bucketList"].filter(function (el) {
+    if (el !=null || el != "") {
+      count ++
+      return el 
+    }
+  });
+
+  current["bucketList"] = newArray; 
+  console.log("number of clean ups: ", count)
+}
+  return current
 }
 
   // add new item to database
 
 function saveBucketList(current) {
-  console.log(current)
+ 
   database
     .ref(current.theme + "/")
     .update({
@@ -50,7 +67,7 @@ function saveBucketList(current) {
     return current;
 }
 
-function getDataForBucketList(current) {
+function initialReadDB(current) {
   
   var data ={}
   database
@@ -72,11 +89,11 @@ function getDataForBucketList(current) {
 // print
 // ----------- from map>
 
-function printToDo(i, placesList, place) {
+function printToDo(i, placesList, place, current) {
   // gets the place name and lists it on the "to do" list
   var li = $("<li>");
-  // li.attr("value", place.name);
-  
+ 
+   
   li.attr({
     value: place.name,
     draggable: true,
@@ -90,12 +107,12 @@ function printToDo(i, placesList, place) {
     background: "#F7F7F7",
     transition: "all .5s ease",
   });
-  // if name clicked, move to bucketList
-  // li.click(saveNewBucketListItem);
-  // li.click(addToBucketList);
+ 
   li.text(place.name);
   placesList.append(li);
+ 
 }
+
 
 function printBucketList(current) {
   var bucket = $("#bucketText");
@@ -131,9 +148,6 @@ function printBucketList(current) {
 //
 //
 
-function upDateCurrent(data) {
-  // Current should contain t
-}
 
 function getAjax(resolve) {
    
@@ -146,7 +160,7 @@ function getAjax(resolve) {
   });
 }
 function postAjax(current) {
-console.log(current)
+ 
   $.post( "/current", current, function(data) {
       console.log("success", data)
       return data;
@@ -155,7 +169,7 @@ console.log(current)
   })
   // closes modal
   $("#modal2").modal();
-  $("#title").text("Destination: " + current.place +"  ~ Theme: " + current.theme + " bl " ) 
+  $("#title").text("Destination: " + current.place +"  ~ Theme: " + current.theme ) 
   $("body").css("overflow", "auto");
   
 }

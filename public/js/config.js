@@ -23,9 +23,9 @@ function drag(ev) {
 
 function drop(ev, el) {
   ev.preventDefault();
-  console.log(ev)
+ 
   var droppedItemID = ev.dataTransfer.getData("text");
-  console.log(draggedItem)
+ 
    
   el.appendChild(document.getElementById(droppedItemID));
    addToBucketList(draggedItem)

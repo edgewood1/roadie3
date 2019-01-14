@@ -14,8 +14,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
     
   <link rel="stylesheet" href="style.css" type="text/css">
-  <link rel="stylesheet" href="dragula.css" type="text/css">
-  <link rel="stylesheet" href="dragula2.css" type="text/css">
+ 
 </head>
 
 <body>
@@ -29,6 +28,7 @@
         <i class="material-icons">menu</i>
       </a>
       <ul class="right hide-on-med-and-down">
+          <li><a data-target="modal3" class="modal-trigger" id="help">Help</a></li>
         <li><a href="/">Home</a></li>
         <li><a data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
         <li><a data-target="modal1" class="modal-trigger" id="create">Create</a></li>
@@ -40,9 +40,10 @@
   </div>
 
   <ul id="slide-out" class="sidenav">
-    <li><a href="/">Home</a></li>
-    <li><a data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
-    <li><a data-target="modal1" class="modal-trigger" id="create">Create</a></li>
+      <li><a data-target="modal3" class="modal-trigger" id="help">Help</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a data-target="modal2" class="modal-trigger" id="place7">Places</a></li>
+      <li><a data-target="modal1" class="modal-trigger" id="create">Create</a></li>
     <!-- <li><a href="/">Bucket</a></li> -->
 
   </ul>
@@ -73,6 +74,20 @@
       </ul>
     </div>
   </div>
+
+    <!-- Modal Structure 3 -->
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+          <p> <button> Places </button> - see a list of past destinactions </p>
+          <p> <button> Create </button> - create a new destination </p>
+          <p> <button> Schedule </button> - schedule bucketlist activites</p>
+          <p> <button> More </button> - this will load more to dos </p>
+          <hr>
+          <p> Drag activities from the TO DO panel to the BUCKETLIST </p>
+          <p> Click <button> Schedule </button> when you'd like to schedule these </p>  
+        </div>
+      </div>
 
   <div class="container">
     <!-- title -->
@@ -188,7 +203,7 @@
         </div>
 </div>
 <!-- to do / bucket row closed -->
-<div> footer </div>
+<!-- <div> footer </div> -->
 </div>
 <!-- container closed -->
 
