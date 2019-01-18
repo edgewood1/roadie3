@@ -1,52 +1,48 @@
 // variables defined
 
 var bucketList = [],
-  y = 0;
- 
+  y = 0,
+  scheduleFlag;
+
 // drag and drop / firebase config
 
 function allowDrop(ev) {
   ev.preventDefault();
 }
 var draggedItem;
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-  
-  draggedItem = ev.target.textContent;
-}
 
-// function drop(ev) {
-//   ev.preventDefault();
-//   var data = ev.dataTransfer.getData("text");
-//   ev.target.appendChild(document.getElementById(data));
-// }
+function drag(ev) {
+  var name = ev.target.textContent;
+  ev.dataTransfer.setData("application/x-moz-node", name);
+  console.log(name);
+}
 
 function drop(ev, el) {
   ev.preventDefault();
- 
-  var droppedItemID = ev.dataTransfer.getData("text");
- 
-   
-  el.appendChild(document.getElementById(droppedItemID));
-   addToBucketList(draggedItem)
-  
-//   var path = ev.path[1].id 
-// var targetBox = ev.target.textContent
-  // if (path == "bucketText" ) {
-    
-  //   console.log( droppedItem + " landed on " + targetBox + " via " + path) 
-  //   addToBucketList(ev.target.textContent)
-  // } else if (path == "bucketList2") {
-  //   console.log( droppedItem + " landed on " + targetBox + " via " + path) 
-  // } else {
-  //   console.log("no dice")
-  //   console.log( droppedItem + " landed on " + targetBox + " via " + path) 
-  // }
+  console.log(ev);
+  console.log(" dropped here : ", el);
+  var droppedItemID = ev.dataTransfer.getData("application/x-moz-node");
+
+  console.log(droppedItemID);
+  var x = $("li").filter(function() {
+    return $(this).attr("value") == droppedItemID;
+  });
+
+  x = x[0];
+
+  console.log(x);
+  if (scheduleFlag == 0) {
+    el.appendChild(x);
+    //  addToBucketList(draggedItem)
+  } else {
+    $(x).addClass("daily_text");
+    console.log(x);
+    el.append(x);
+    draggedEvent(x);
+  }
 }
 
-function banDrop(ev) {
-
-}
+function banDrop(ev) {}
 
 // firebase config
 
@@ -58,8 +54,6 @@ var config = {
   storageBucket: "fir-counter-56e8f.appspot.com",
   messagingSenderId: "565377657653"
 };
-
-
 
 firebase.initializeApp(config);
 

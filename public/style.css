@@ -2,18 +2,27 @@ body {
   /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   overflow: visible;
-  
-    background-image: linear-gradient(#ffefba,
-    #ffffff);
-  
+
+  background-image: linear-gradient(#ffefba, #ffffff);
 }
 
+.dayBox,
+.card-content {
+  min-height: 150px;
+}
+.sidenav {
+  width: 20%;
+  background-image: linear-gradient(pink, yellow) !important;
+}
 #title {
   padding: 5px;
   margin: 5px;
   font-size: 150%;
 }
 
+.highlight {
+  font-weight: bolder;
+}
 .card .card-content {
   padding: 4px;
   margin-left: 2px !important;
@@ -29,11 +38,23 @@ body {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 100px;
   border: 2px solid #ececec;
-  background: #F7F7F7;
-  transition: all .5s ease;
-  color: black
+  background: #f7f7f7;
+  transition: all 0.5s ease;
+  color: black;
 }
 
+.daily_text {
+  padding: 0px;
+  /* border-radius: 0 0 2px 2px; */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 100px;
+  border: 2px solid #ececec;
+  background: #f7f7f7;
+  transition: all 0.5s ease;
+  color: black;
+  list-style-type: none;
+  margin: 7px auto;
+}
 /* #bucketText>li #places>li {
   padding: 1em;
   margin: 0 1em 1em 0;
@@ -70,4 +91,19 @@ div.hidden {
 
 .modal {
   overflow: scroll !important;
+}
+
+.datepicker-date-display {
+  display: none;
+}
+
+.datepicker-calendar-container {
+  max-height: 21em;
+}
+.datepicker-day-button {
+  line-height: 1.2em;
+}
+
+.datepicker-table > thead > tr > th {
+  padding: 0;
 }

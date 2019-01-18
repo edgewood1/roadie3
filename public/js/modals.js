@@ -1,57 +1,70 @@
 // CREATE NEW PLACE -  MODAL1
 
-$("#create").on("click", function(e) {
-  $("#daily").css("display", "none")
+$(".create").on("click", function(e) {
+  console.log("create");
+  $("#daily").css("display", "none");
   $("#modal1").modal();
 });
 
-$("#help").on("click", function(e) {
-  $("#modal3").modal();
-})
-
-$("#submit").on("click", modalToDB)
+$("#submit").on("click", modalToDB);
 
 function modalToDB(e) {
   e.preventDefault();
-  var datum={}
- 
+  var datum = {};
+
   var place = $("#place")
     .val()
     .trim();
   var theme = $("#theme")
     .val()
-    .trim(); 
- 
+    .trim();
+  var arrive = $("#arrive")
+    .val()
+    .trim();
+  var depart = $("#depart")
+    .val()
+    .trim();
+
+  var start = moment(arrive);
+  var end = moment(depart);
+  var duration = moment.duration(end.diff(start));
+  var days = duration.asDays();
+  console.log(days);
   datum = {
     theme: theme,
-    place: place, 
+    place: place,
+    arrive: arrive,
+    depart: depart,
+    days: days,
     bucketList: [],
-    events: [] 
+    events: []
   };
-
-  database.ref(theme+"/").update(datum);
+  console.log(datum);
+  database.ref(theme + "/").update(datum);
 
   postAjax(datum);
   createMap(datum);
-};
+}
 
 // SELECT OLD PLACE - MODAL2
 
-$("#place7").on("click", function createPlaceModal() {
+$(".place7").on("click", function createPlaceModal() {
   $("#daily").css("display", "none");
   $("#modal2").modal();
-  $("#themeplace").empty();
+  $("td").empty();
   var theme, place1;
   database.ref().on(
     "value",
-    
+
     function(snapshot) {
       snapshot.forEach(function(snap) {
-          place1 = snap.val().place;
-          theme = snap.key;
-          var message = theme + " : " + place1;
-          
-          var li = $("<li>");
+        place1 = snap.val().place;
+        theme = snap.key;
+        var tr = $("<tr>");
+        var td = $("<td>");
+        if (place1) {
+          var message = place1 + "  |  " + theme;
+
           var a = $("<a>")
             .attr({
               class: "place2",
@@ -59,9 +72,15 @@ $("#place7").on("click", function createPlaceModal() {
               "data-theme": theme
             })
             .text(message);
-          li.append(a);
-          $("#themeplace").append(li);
-        
+          td.append(a);
+          tr.append(td);
+          $("#themeplace").append(tr);
+        } else {
+          var message = "Use the 'create' tab to create an event";
+          td.text(message);
+          tr.append(td);
+          $("#themeplace").append(tr);
+        }
       });
     },
     function(errorObject) {
@@ -70,7 +89,7 @@ $("#place7").on("click", function createPlaceModal() {
   );
   //opens modal
   // $("#modal2").modal();
-})
+});
 
 // SELECT THEME IN PLACES MODAL2
 $("#themeplace").on("click", selectNewPlace);
@@ -79,17 +98,19 @@ $("#themeplace").on("click", selectNewPlace);
 
 function convertToCurrent(e) {
   var current = {
-    place : e.target.dataset.name,
-    theme : e.target.dataset.theme,
-  }
+    place: e.target.dataset.name,
+    theme: e.target.dataset.theme
+  };
   // closes modal
   $("#modal2").modal();
 
   return current;
 }
 
+// modal 3 - help
 
-
-
-
-
+$(".help").on("click", function(e) {
+  console.log("help");
+  $("#daily").css("display", "none");
+  $("#modal3").modal();
+});
