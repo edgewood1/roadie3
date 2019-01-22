@@ -9,6 +9,9 @@ $(document).ready(function() {
   //default place?
   current.place = "Durham, NC";
   current.bucketList = [];
+  current.events = {};
+  current.events["eventsArr"] = [];
+
   current.type = ["museum"];
   current.pyrmont = {};
 
@@ -152,9 +155,12 @@ function createMarkers(current) {
     //   ) {
     // placesList = location
     // loop #
-    // place - indiviual place
-
-    printToDo(i, placesList, place, current);
+    // place - gemetry
+    console.log(current);
+    console.log(place);
+    if (!events["eventsArr"].includes(place.name)) {
+      printToDo(i, placesList, place, current);
+    }
     // }
     // } else if (!events) {
     //   if (!current["bucketList"].includes(current.places[i].name)) {

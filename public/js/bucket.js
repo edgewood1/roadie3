@@ -10,41 +10,51 @@ function pushBucketList(current) {
   return current;
 }
 
+// clean bucketlist and events
+
 function cleanBucketList(current) {
   console.log("cleanBucket! ", current);
   var count = 0;
-  var events = current["events"];
-  var bucketList = current["bucketList"];
 
-  if (bucketList) {
-    // remove null from bucketList
+  if (!current["events"]) {
+    current["events"] = {};
+    current.events.eventsArr = [];
+  }
+
+  if (!current["bucketList"]) {
+    current["bucketList"] = [];
+  }
+
+  // remove null from bucketList
+
+  if (current["bucketList"]) {
     var newArray = current["bucketList"].filter(function(el) {
       if (el != null || el != "") {
         count++;
         return el;
       }
     });
-
     current["bucketList"] = newArray;
   }
 
-  // events Clean Up
+  // make sure toDo doesn't include items from bucketlist
 
-  if (events) {
-    bucketList.forEach(function(elem, item) {
-      console.log("events Array - ", events["eventsArr"]);
-      if (events["eventsArr"]) {
-        if (events["eventsArr"].includes(elem)) {
-          console.log(elem + "is in the events array");
-          count++;
-          bucketList[item] = null;
-        }
+  if (current.events["eventsArr"]) {
+    current["bucketList"].forEach(function(elem, item) {
+      // console.log("events Array - ", events["eventsArr"]);
+      // if (events["eventsArr"]) {
+      if (current.events["eventsArr"].includes(elem)) {
+        console.log(elem + "is in the events array");
+        count++;
+        current.bucketList[item] = null;
       }
+      // }
     });
   }
+  // make sure dailys not in bucket List
 
-  if (bucketList) {
-    // cleann again
+  // remove nulls from bucketList
+  if (current["bucketList"]) {
     var newArray = current["bucketList"].filter(function(el) {
       if (el != null || el != "") {
         count++;
@@ -85,8 +95,11 @@ function initialReadDB(current) {
 // print
 // ----------- from map>
 
+function cleanToDo(i, placeList, place) {}
+
 function printToDo(i, placesList, place) {
   // gets the place name and lists it on the "to do" list
+
   var li = $("<li>");
 
   li.attr({
@@ -156,8 +169,19 @@ function postAjax(current) {
   });
   // closes modal
   $("#modal2").modal();
-  $("#title").text(
-    "Destination: " + current.place + "  ~ Theme: " + current.theme
-  );
+  console.log(current);
+  var doThis = current["place"].slice(0, -5);
+  $("#destination")
+    .text("Destination: " + doThis)
+    .css("margin-bottom", "2%");
+  $("#theme1")
+    .text("Theme: " + current.theme)
+    .css("margin-bottom", "2%");
+  $("#arrive1")
+    .text("Arrival: " + current.arrive)
+    .css("margin-bottom", "2%");
+  $("#depart1")
+    .text("Depart: " + current.depart)
+    .css("margin-bottom", "2%");
   $("body").css("overflow", "auto");
 }

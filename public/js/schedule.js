@@ -74,6 +74,7 @@ function printDayBox(today, current) {
   showEvents(current);
 }
 
+// hides todo
 function showEvents(current) {
   console.log("visible!!", current.days);
   $("#daily").css("display", "inline");

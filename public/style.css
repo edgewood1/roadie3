@@ -5,7 +5,19 @@ body {
 
   background-image: linear-gradient(#ffefba, #ffffff);
 }
-
+#bucketList3 {
+  max-height: 23em;
+  min-height: 23em;
+}
+#daily {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.dayBox {
+  max-height: 150px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 .dayBox,
 .card-content {
   min-height: 150px;
@@ -42,7 +54,9 @@ body {
   transition: all 0.5s ease;
   color: black;
 }
-
+li {
+  list-style-type: none;
+}
 .daily_text {
   padding: 0px;
   /* border-radius: 0 0 2px 2px; */
@@ -55,15 +69,7 @@ body {
   list-style-type: none;
   margin: 7px auto;
 }
-/* #bucketText>li #places>li {
-  padding: 1em;
-  margin: 0 1em 1em 0;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-  border-radius: 100px;
-  border: 2px solid #ececec;
-  background: #F7F7F7;
-  transition: all .5s ease;
-} */
+
 .pac-container {
   z-index: 10000 !important;
 }
