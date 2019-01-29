@@ -8,7 +8,7 @@ require("dotenv").config();
 var app = express();
 // app.use(dragula())
 var bodyParser = require("body-parser");
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 80;
 app.use(express.static(path.join(__dirname, "public")));
 
 // var admin = require("firebase-admin");
