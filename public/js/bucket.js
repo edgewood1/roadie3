@@ -7,73 +7,7 @@ function pushBucketList(current) {
   } else if (!current["bucketList"].includes(current["bucketText"])) {
     current["bucketList"].push(current["bucketText"]);
   }
-  return current;
-}
-
-// clean bucketlist and events
-
-function cleanBucketList(current) {
-  console.log("cleanBucket! ", current);
-  var count = 0;
-
-  if (!current["events"]) {
-    current["events"] = {};
-    current.events.eventsArr = [];
-  }
-
-  if (!current["bucketList"]) {
-    current["bucketList"] = [];
-  }
-
-  // remove null from bucketList
-
-  if (current["bucketList"]) {
-    var newArray = current["bucketList"].filter(function(el) {
-      if (el != null || el != "") {
-        count++;
-        return el;
-      }
-    });
-    current["bucketList"] = newArray;
-  }
-
-  // make sure toDo doesn't include items from bucketlist
-
-  if (current.events["eventsArr"]) {
-    current["bucketList"].forEach(function(elem, item) {
-      // console.log("events Array - ", events["eventsArr"]);
-      // if (events["eventsArr"]) {
-      if (current.events["eventsArr"].includes(elem)) {
-        console.log(elem + "is in the events array");
-        count++;
-        current.bucketList[item] = null;
-      }
-      // }
-    });
-  }
-  // make sure dailys not in bucket List
-
-  // remove nulls from bucketList
-  if (current["bucketList"]) {
-    var newArray = current["bucketList"].filter(function(el) {
-      if (el != null || el != "") {
-        count++;
-        return el;
-      }
-    });
-
-    current["bucketList"] = newArray;
-    console.log("number of clean ups: ", count);
-  }
-  return current;
-}
-
-// add new item to database
-
-function saveBucketList(current) {
-  database.ref(current.theme + "/").update({
-    bucketList: current.bucketList
-  });
+  console.log("pushed bl", current);
   return current;
 }
 
@@ -83,6 +17,7 @@ function initialReadDB(current) {
     "value",
     function(snapshot) {
       current = snapshot.val();
+      console.log("read db: ", current);
     },
     function(errorObject) {
       console.log("The read failed: " + errorObject.code);
@@ -90,12 +25,6 @@ function initialReadDB(current) {
   );
   return current;
 }
-
-// ------------
-// print
-// ----------- from map>
-
-function cleanToDo(i, placeList, place) {}
 
 function printToDo(i, placesList, place) {
   // gets the place name and lists it on the "to do" list
@@ -121,6 +50,7 @@ function printToDo(i, placesList, place) {
 }
 
 function printBucketList(current) {
+  console.log("printBucketList");
   var bucket = $("#bucketText");
   bucket.empty();
 
@@ -145,10 +75,6 @@ function printBucketList(current) {
   return current;
 }
 
-// ---------------------- current
-//
-//
-
 function getAjax(resolve) {
   return $.ajax({
     method: "GET",
@@ -159,7 +85,7 @@ function getAjax(resolve) {
   });
 }
 
-function postAjax(current) {
+function postAjax(current, resolve) {
   console.log(current);
   $.post("/current", current, function(data) {
     console.log("success", data);
@@ -170,6 +96,12 @@ function postAjax(current) {
   // closes modal
   $("#modal2").modal();
   console.log(current);
+  resolve(current);
+}
+
+// title?
+function postTitle(current) {
+  console.log("PostTitle");
   var doThis = current["place"].slice(0, -5);
   $("#destination")
     .text("Destination: " + doThis)
@@ -184,4 +116,5 @@ function postAjax(current) {
     .text("Depart: " + current.depart)
     .css("margin-bottom", "2%");
   $("body").css("overflow", "auto");
+  return current;
 }

@@ -3,51 +3,40 @@ var target, today, li, y, line;
 
 // on click --
 
+// opens daily
+$("#schedule").on("click", { param: readOldEvents }, saveSchedule);
+
+// saves daily
+$("#save").on("click", { param: readNewEvents }, saveDaily);
+
 //returns to bucketList
 $("#backToDo").on("click", returnToDo);
 
-// opens daily
-$("#schedule").on("click", { param: readOldEvents }, getCurrent);
-
-// saves daily
-$("#save").on("click", { param: readNewEvents }, getCurrent);
 var z = [];
 
-function saveEvents() {}
-
-// daily boxes disappear
-
-function returnToDo() {
-  $("#daily").css("display", "none");
-
-  $("#save").css("display", "none");
-  $("#backToDo").css("display", "none");
-
-  $("#toDo")
-    .show()
-    .addClass("col s0");
-}
-
 // get Current bucket list - why?
-function getCurrent(event) {
-  var callback = event.data.param;
+function getCurrent(resolve) {
+  // var callback = event.data.param;
   new Promise(function(resolve, reject) {
     getAjax(resolve);
   }).then(function(current) {
-    current = cleanBucketList(current);
-    callback(current);
+    console.log("curretn - ", current);
+    // return current;
+    resolve(current);
   });
 }
 
 function readOldEvents(current) {
-  scheduleFlag = 1;
+  current.scheduleFlag = 1;
   var events = current.events;
   if (events) {
     console.log("evnets'");
     day = Object.keys(events);
+    console.log(day);
     for (var a = 0; a < day.length; a++) {
       target = $("#" + day[a]);
       var today = events[day[a]];
+      // console.log(today);
       printDayBox(today, current);
     }
   } else {
@@ -89,14 +78,9 @@ function showEvents(current) {
 }
 
 // what is the new event?
-
-function draggedEvent(event) {
-  console.log(event);
-}
-
 /// READ and SAVE day boxes
 
-function readNewEvents(current) {
+function readNewEvents(current, resolve) {
   days = 3;
   var events = {};
   var eventsArr = [];
@@ -126,14 +110,16 @@ function readNewEvents(current) {
 
   current.events = events;
   console.log("new: ", current);
-  saveEvents(current);
+  resolve(current);
+  // return current;
+  // saveEvents(current);
 }
 
-function saveEvents(current) {
+// function saveEvents(current) {
+function saveToDb(current) {
   console.log(current);
-  database.ref(current.theme + "/").update({
-    events: current.events
-  });
+  database.ref(current.theme + "/").set(current);
+  return current;
   // readDayBoxesFromDb(current);
   // })
 }

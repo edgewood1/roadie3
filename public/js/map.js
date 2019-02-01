@@ -158,15 +158,13 @@ function createMarkers(current) {
     // place - gemetry
     console.log(current);
     console.log(place);
-    if (!events["eventsArr"].includes(place.name)) {
+
+    if (!events) {
+      printToDo(i, placesList, place, current);
+    } else if (!events["eventsArr"].includes(place.name)) {
       printToDo(i, placesList, place, current);
     }
-    // }
-    // } else if (!events) {
-    //   if (!current["bucketList"].includes(current.places[i].name)) {
-    //     printToDo(i, placesList, place, current);
-    //   }
-    // }
+
     bounds.extend(place.geometry.location);
   }
   $("#bucketList").css("display", "inline");

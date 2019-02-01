@@ -6,11 +6,10 @@ $(".create").on("click", function(e) {
   $("#modal1").modal();
 });
 
-$("#submit").on("click", modalToDB);
+$("#submit").on("click", createNewPlace);
 
-function modalToDB(e) {
+function getNewPlace(e) {
   e.preventDefault();
-  var datum = {};
 
   var place = $("#place")
     .val()
@@ -30,7 +29,7 @@ function modalToDB(e) {
   var duration = moment.duration(end.diff(start));
   var days = duration.asDays();
   console.log(days);
-  datum = {
+  var current = {
     theme: theme,
     place: place,
     arrive: arrive,
@@ -39,11 +38,7 @@ function modalToDB(e) {
     bucketList: [],
     events: []
   };
-  console.log(datum);
-  database.ref(theme + "/").update(datum);
-
-  postAjax(datum);
-  createMap(datum);
+  return current;
 }
 
 // SELECT OLD PLACE - MODAL2

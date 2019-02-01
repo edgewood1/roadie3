@@ -4,12 +4,15 @@ var bucketList = [],
   y = 0,
   scheduleFlag;
 
-// drag and drop / firebase config
+var draggedItem;
+
+// 1. Item dragged -----
 
 function allowDrop(ev) {
   ev.preventDefault();
 }
-var draggedItem;
+
+// 2. the dragging of item
 
 function drag(ev) {
   var name = ev.target.textContent;
@@ -17,32 +20,34 @@ function drag(ev) {
   console.log(name);
 }
 
+// 3. dropping the item --
+
 function drop(ev, el) {
   ev.preventDefault();
-  console.log(ev);
-  console.log(" dropped here : ", el);
+  console.log(" what is dropped: ", ev);
+  console.dir(el);
   var droppedItemID = ev.dataTransfer.getData("application/x-moz-node");
 
   console.log(droppedItemID);
+  // loop through li tags to see if this value is already present?
   var x = $("li").filter(function() {
     return $(this).attr("value") == droppedItemID;
   });
 
   x = x[0];
-
-  console.log(x);
-  if (scheduleFlag == 0) {
-    el.appendChild(x);
-    //  addToBucketList(draggedItem)
-  } else {
+  console.log("hey - ", el["className"]);
+  if (el["className"].includes("dayBox")) {
+    console.log("daybox!");
     $(x).addClass("daily_text");
-    console.log(x);
+    //   console.log(x);
     el.append(x);
-    draggedEvent(x);
+  } else if (el["id"].includes("bucketText")) {
+    el.appendChild(x);
+    console.log("added, ", x);
+
+    addToBucketList(droppedItemID);
   }
 }
-
-function banDrop(ev) {}
 
 // firebase config
 
