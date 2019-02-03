@@ -16,31 +16,36 @@ function createNewPlace(e) {
 
 function selectNewPlace(e) {
   // create current
-
+  $("#modal2").modal();
   $("#title").css("display", "none");
   var current = convertToCurrent(e);
   // call db to get rest of data
   current = initialReadDB(current);
   // clean bucketList
+
   // current = cleanBucketList(current);
-  // print bucketlist, minus events
-  current = printBucketList(current);
+  new Promise(function(resolve, reject) {
+    current = JSON.stringify(current);
+    $.get("/content/" + current, function(current) {
+      console.log("back home", current);
+      // return current;
+      resolve(current);
+    });
+  }).then(function(current) {
+    // print bucketlist, minus events
+    current = printBucketList(current);
 
-  current = postTitle(current);
-  // save db data to current
+    current = postTitle(current);
+    // save db data to current
 
-  postAjaxCreateMap(current);
-  // new Promise(function(resolve, reject) {
-  //   postAjax(current, resolve);
-  // }).then(function(current) {
-  //   createMap(current);
-  // });
+    postAjaxCreateMap(current);
+  });
 }
 
 function postAjaxCreateMap(current) {
   // $ajax("/current"
   new Promise(function(resolve, reject) {
-    return postAjax(current, resolve);
+    postAjax(current, resolve);
   }).then(function(current) {
     createMap(current);
     return current;
@@ -52,7 +57,7 @@ function saveSchedule() {
   $("#schedule").hide();
 
   // get current
-  console.log(readOldEvents);
+
   new Promise(function(resolve, reject) {
     getAjax(resolve);
   }).then(function(current) {
@@ -69,29 +74,37 @@ function addToBucketList(bucketText) {
     getAjax(resolve);
   }).then(function(current) {
     // add new bucketItem to current
-    current.scheduleFlag = 0;
+
     current["bucketText"] = bucketText;
 
     current = pushBucketList(current);
 
     // current = cleanBucketList(current);
     // add bucketItem to bucketList
+    new Promise(function(resolve, reject) {
+      current = JSON.stringify(current);
+      $.get("/content/" + current, function(current) {
+        console.log("back home", current);
+        // return current;
+        resolve(current);
+      });
+    }).then(function(current) {
 
-    // new Promise(function(resolve, reject) {
-    console.log("saving new item!");
-    resolve = postAjax(current);
-    // }).then(function(current) {
-    //   console.log("added to current!", current);
-    // });
+    new Promise(function(resolve, reject) {
+      console.log("saving new item!");
 
-    printBucketList(current);
+      postAjax(current, resolve);
+    }).then(function(current) {
+      printBucketList(current);
+      //   console.log("added to current!", current);
+    });
   });
 }
 
 function saveDaily() {
   // read daily
   new Promise(function(resolve, reject) {
-    var current = getCurrent(resolve);
+    var current = getAjax(resolve);
   }).then(function(current) {
     new Promise(function(resolve, reject) {
       current = readNewEvents(current, resolve);

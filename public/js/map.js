@@ -3,10 +3,17 @@
 // geocode, draw map, markers
 
 // begin process
-// var current = {}
+var current = {};
 
 $(document).ready(function() {
   //default place?
+  $(".sidenav").sidenav({ closeOnClick: true, menuWidth: 120 });
+  $(".sidenav li").click(() => {
+    $(".sidenav").sidenav("close");
+  });
+  $(".datepicker").datepicker();
+
+  $("#title").text("Use tabs to create or select a place");
   current.place = "Durham, NC";
   current.bucketList = [];
   current.events = {};
@@ -156,12 +163,15 @@ function createMarkers(current) {
     // placesList = location
     // loop #
     // place - gemetry
-    console.log(current);
-    console.log(place);
 
     if (!events) {
       printToDo(i, placesList, place, current);
-    } else if (!events["eventsArr"].includes(place.name)) {
+
+      // don't print item if in eventsArr OR bucketList
+    } else if (
+      !events["eventsArr"].includes(place.name) &&
+      !current["bucketList"].includes(place.name)
+    ) {
       printToDo(i, placesList, place, current);
     }
 

@@ -27,40 +27,38 @@ function getCurrent(resolve) {
 }
 
 function readOldEvents(current) {
-  current.scheduleFlag = 1;
   var events = current.events;
+  // events > events.day1, day2, eventsArr
   if (events) {
-    console.log("evnets'");
-    day = Object.keys(events);
-    console.log(day);
-    for (var a = 0; a < day.length; a++) {
-      target = $("#" + day[a]);
-      var today = events[day[a]];
-      // console.log(today);
-      printDayBox(today, current);
-    }
+    // get keys from events object
+
+    var day = Object.keys(events);
+
+    // remove the "eventsArr"
+    day = day.slice(0, -1);
+    // loop through events keys,
+    day.forEach(function(elem1, item1) {
+      target = $("#" + elem1);
+      var today = events[elem1];
+      // loop through items in each event key array
+      today.forEach(function(elem2, item2) {
+        // post each item
+        line = $("<li>").text(elem2);
+        line.attr({
+          value: elem2,
+          draggable: true,
+          id: "a" + item2,
+          ondragstart: "drag(event)"
+        });
+        target.append(line);
+      });
+      // repeat for id=day2
+    });
+    showEvents(current);
   } else {
     console.log("show events");
     showEvents(current);
   }
-}
-
-function printDayBox(today, current) {
-  for (var x = 0; x <= today.length; x++) {
-    // insert now.day1[0] into li tag
-    if (today[x]) {
-      line = $("<li>").text(today[x]);
-      line.attr({
-        value: today[x],
-        draggable: true,
-        id: "a" + x,
-        ondragstart: "drag(event)"
-      });
-      target.append(line);
-    }
-    // repeat for id=day2
-  }
-  showEvents(current);
 }
 
 // hides todo

@@ -12,6 +12,7 @@ function pushBucketList(current) {
 }
 
 function initialReadDB(current) {
+  console.log("2. initial read");
   var data = {};
   database.ref(current.theme + "/").on(
     "value",
@@ -50,7 +51,7 @@ function printToDo(i, placesList, place) {
 }
 
 function printBucketList(current) {
-  console.log("printBucketList");
+  console.log("4printBucketList ", current);
   var bucket = $("#bucketText");
   bucket.empty();
 
@@ -86,17 +87,15 @@ function getAjax(resolve) {
 }
 
 function postAjax(current, resolve) {
-  console.log(current);
   $.post("/current", current, function(data) {
     console.log("success", data);
-    return data;
+    resolve(data);
   }).fail(function(error) {
     console.log("error ", error);
   });
   // closes modal
-  $("#modal2").modal();
+  // $("#modal2").modal();
   console.log(current);
-  resolve(current);
 }
 
 // title?

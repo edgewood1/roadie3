@@ -92,12 +92,12 @@ $("#themeplace").on("click", selectNewPlace);
 // create current
 
 function convertToCurrent(e) {
+  console.log("1. converting");
   var current = {
     place: e.target.dataset.name,
     theme: e.target.dataset.theme
   };
   // closes modal
-  $("#modal2").modal();
 
   return current;
 }

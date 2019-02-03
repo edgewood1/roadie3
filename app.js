@@ -22,6 +22,13 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get("/content/:func", function(req, res) {
+  var cont = req.params.func;
+  // console.log(cont);
+  var response = content.cleanBucketList(cont);
+  console.log("returned json -= ", response);
+  res.send(response);
+});
 app.get("/current", function(req, res) {
   console.log(req.body);
   return res.send(current);
