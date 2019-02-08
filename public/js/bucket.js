@@ -63,7 +63,6 @@ function printBucketList(current) {
       li.attr({
         value: e,
         draggable: true,
-        // id: "a" + y,
         ondragstart: "drag(event)"
       });
 
