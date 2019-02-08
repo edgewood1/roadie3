@@ -75,28 +75,6 @@ function printBucketList(current) {
   return current;
 }
 
-function getAjax(resolve) {
-  return $.ajax({
-    method: "GET",
-    url: "/current",
-    success: function(current) {
-      resolve(current);
-    }
-  });
-}
-
-function postAjax(current, resolve) {
-  $.post("/current", current, function(data) {
-    console.log("success", data);
-    resolve(data);
-  }).fail(function(error) {
-    console.log("error ", error);
-  });
-  // closes modal
-  // $("#modal2").modal();
-  console.log(current);
-}
-
 // title?
 function postTitle(current) {
   console.log("PostTitle");

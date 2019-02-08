@@ -14,18 +14,6 @@ $("#backToDo").on("click", returnToDo);
 
 var z = [];
 
-// get Current bucket list - why?
-function getCurrent(resolve) {
-  // var callback = event.data.param;
-  new Promise(function(resolve, reject) {
-    getAjax(resolve);
-  }).then(function(current) {
-    console.log("curretn - ", current);
-    // return current;
-    resolve(current);
-  });
-}
-
 function readOldEvents(current) {
   var events = current.events;
   // events > events.day1, day2, eventsArr
