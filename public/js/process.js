@@ -89,14 +89,14 @@ function addToBucketList(bucketText) {
         resolve(current);
       });
     }).then(function(current) {
+      new Promise(function(resolve, reject) {
+        console.log("saving new item!");
 
-    new Promise(function(resolve, reject) {
-      console.log("saving new item!");
-
-      postAjax(current, resolve);
-    }).then(function(current) {
-      printBucketList(current);
-      //   console.log("added to current!", current);
+        postAjax(current, resolve);
+      }).then(function(current) {
+        printBucketList(current);
+        //   console.log("added to current!", current);
+      });
     });
   });
 }
