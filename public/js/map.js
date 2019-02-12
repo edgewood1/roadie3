@@ -12,7 +12,7 @@ $(document).ready(function() {
     $(".sidenav").sidenav("close");
   });
   $(".datepicker").datepicker();
-
+  $("#toDo").attr("style", "display: none");
   $("#title").text("Use tabs to create or select a place");
   current.place = "Durham, NC";
   current.bucketList = [];
@@ -21,8 +21,10 @@ $(document).ready(function() {
 
   current.type = ["museum"];
   current.pyrmont = {};
+  // $.post("/current", current, function(current) {
+  //   createMap(current);
+  // });
 
-  createMap(current);
   // geoCode(current);
 });
 

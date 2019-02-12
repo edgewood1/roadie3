@@ -1,0 +1,38 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style>
+    #daily {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr)
+    }
+    .box {
+        min-height: 120px;
+        border: 2px solid black;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div id="daily">
+
+    </div>
+
+    <script>
+   
+        for (i=1; i<7; i++){
+            var div1 = $("<div>").addClass("box").css({"position": "relative"})
+            var div2 = $("<div>").text("Day "+i)
+            var div3 = $("<div>")
+                .attr({
+                    "id": "box"+i, 
+                    "ondrop": "drop(event, this)",
+                    "ondragover": "allowDrop(event)"})
+                .css({"display": "flex","height": "calc(14vh)"})
+            
+            div1.append(div2)
+            div1.append(div3)
+                $("#daily").append(div1)
+            }
+                </script>
+    <body>

@@ -1,11 +1,3 @@
-// variables defined
-
-var bucketList = [],
-  y = 0,
-  scheduleFlag;
-
-var draggedItem;
-
 // 1. Item dragged -----
 
 function allowDrop(ev) {
@@ -15,37 +7,42 @@ function allowDrop(ev) {
 // 2. the dragging of item
 
 function drag(ev) {
-  var name = ev.target.textContent;
-  ev.dataTransfer.setData("application/x-moz-node", name);
-  console.log(name);
+  var send = {
+    text: ev.target.textContent,
+    id: ev.target.id
+  };
+  send = JSON.stringify(send);
+  ev.dataTransfer.setData("application/x-moz-node", send);
 }
 
 // 3. dropping the item --
 
 function drop(ev, el) {
   ev.preventDefault();
-  console.log(" what is dropped: ", ev);
-  console.dir(el);
-  var droppedItemID = ev.dataTransfer.getData("application/x-moz-node");
+  var item = ev.dataTransfer.getData("application/x-moz-node");
+  item = JSON.parse(item);
 
-  console.log(droppedItemID);
-  // loop through li tags to see if this value is already present?
-  var x = $("li").filter(function() {
-    return $(this).attr("value") == droppedItemID;
-  });
+  var { text, id } = item;
+  var dropLocation = el;
 
-  x = x[0];
-  console.log("hey - ", el["className"]);
-  if (el["className"].includes("dayBox")) {
+  var fullItem = $("#" + id);
+  console.log(fullItem);
+  //daily
+  if (dropLocation["className"].includes("drop")) {
     console.log("daybox!");
-    $(x).addClass("daily_text");
-    //   console.log(x);
-    el.append(x);
-  } else if (el["id"].includes("bucketText")) {
-    el.appendChild(x);
-    console.log("added, ", x);
-
-    addToBucketList(droppedItemID);
+    // $(dro).addClass("daily_text");
+    dropLocation.append(fullItem[0]);
+    console.log("id ", id);
+    console.log("text ", text);
+    console.log(dropLocation["id"]);
+    item.location = dropLocation["id"];
+    // addToEvents(item);
+    //bucketlist
+  } else if (dropLocation["id"].includes("bucketText")) {
+    dropLocation.appendChild(fullItem[0]);
+    // addToBucketList(item);
+  } else if (dropLocation["id"].includes("places")) {
+    dropLocation.append(fullItem[0]);
   }
 }
 

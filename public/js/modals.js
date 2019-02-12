@@ -28,6 +28,7 @@ function getNewPlace(e) {
   var end = moment(depart);
   var duration = moment.duration(end.diff(start));
   var days = duration.asDays();
+  days += 1;
   console.log(days);
   var current = {
     theme: theme,
