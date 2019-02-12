@@ -11,7 +11,7 @@ var contents = {
   cleanBucketList: function(current) {
     console.log("3> cleanbucketlist");
     var count = 0;
-    current = JSON.parse(current);
+    // current = JSON.parse(current);
     console.log(current);
     // make sure current contains a bucketlist / events
     if (!current["events"]) {

@@ -22,22 +22,26 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/content/:func", function(req, res) {
-  var cont = req.params.func;
-  // console.log(cont);
+app.post("/content", function(req, res) {
+  console.log("hit!----------------");
+  var cont = req.body;
+  console.log(cont);
   var response = content.cleanBucketList(cont);
   console.log("returned json -= ", response);
   res.send(response);
 });
+
 app.get("/current", function(req, res) {
-  console.log(req.body);
+  console.log("new request -----------------new request");
+  console.log("returning - ", current);
   return res.send(current);
 });
 
 app.post("/current", function(req, res) {
+  console.log("new post -----------------new post");
   console.log("post! ", req.body);
   current = req.body;
-  res.send(current);
+  res.send(req.body);
 });
 
 app.listen(port, function() {

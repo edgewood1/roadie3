@@ -31,11 +31,11 @@ function printToDo(i, placesList, place) {
   // gets the place name and lists it on the "to do" list
 
   var li = $("<li>");
-
+  var a = Math.floor(Math.random() * 1000000);
   li.attr({
     value: place.name,
     draggable: true,
-    id: "a" + i,
+    id: "a" + a,
     ondragstart: "drag(event)",
     padding: "2em",
     margin: "0 2em 2em 0",
@@ -45,8 +45,9 @@ function printToDo(i, placesList, place) {
     background: "#F7F7F7",
     transition: "all .5s ease"
   });
-
-  li.text(place.name);
+  var revisedName = place["name"];
+  // .slice(0, 22) + "...";
+  li.text(revisedName);
   placesList.append(li);
 }
 
@@ -57,13 +58,13 @@ function printBucketList(current) {
 
   if (current.bucketList == undefined) {
   } else {
-    current["bucketList"].forEach(function(e) {
+    current["bucketList"].forEach(function(e, i) {
       var li = $("<li>");
-      y++;
+      var a = Math.floor(Math.random() * 1000000);
       li.attr({
         value: e,
         draggable: true,
-        // id: "a" + y,
+        id: "a" + a,
         ondragstart: "drag(event)"
       });
 
@@ -72,30 +73,9 @@ function printBucketList(current) {
     });
   }
   $("#bucketList").css("display", "inline");
-  $("#toDo").css("display", "inline");
+  // $("#toDo").css("display", "inline");
+  makeEvents(current);
   return current;
-}
-
-function getAjax(resolve) {
-  return $.ajax({
-    method: "GET",
-    url: "/current",
-    success: function(current) {
-      resolve(current);
-    }
-  });
-}
-
-function postAjax(current, resolve) {
-  $.post("/current", current, function(data) {
-    console.log("success", data);
-    resolve(data);
-  }).fail(function(error) {
-    console.log("error ", error);
-  });
-  // closes modal
-  // $("#modal2").modal();
-  console.log(current);
 }
 
 // title?

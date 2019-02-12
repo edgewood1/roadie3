@@ -2,16 +2,15 @@
 
 function createNewPlace(e) {
   $("#title").css("display", "none");
-  // from modal
-  // get info
+  // from modal get info
   current = getNewPlace(e);
-  // save to current
   // save to db
   current = saveToDb(current);
-  // create map / to do
-  // database.ref(theme + "/").update(current);
-
-  postAjaxCreateMap(current);
+  // save current create map / to do
+  $.post("/current", current, function(data) {
+    createMap(current);
+    return current;
+  });
 }
 
 function selectNewPlace(e) {
@@ -22,96 +21,90 @@ function selectNewPlace(e) {
   // call db to get rest of data
   current = initialReadDB(current);
   // clean bucketList
-
-  // current = cleanBucketList(current);
-  new Promise(function(resolve, reject) {
-    current = JSON.stringify(current);
-    $.get("/content/" + current, function(current) {
+  // current = JSON.stringify(current);
+  console.log(current);
+  $.ajax({
+    url: "/content",
+    method: "POST",
+    data: current,
+    success: function(current) {
       console.log("back home", current);
-      // return current;
-      resolve(current);
-    });
-  }).then(function(current) {
-    // print bucketlist, minus events
-    current = printBucketList(current);
 
-    current = postTitle(current);
-    // save db data to current
+      current = printBucketList(current);
 
-    postAjaxCreateMap(current);
-  });
-}
+      current = postTitle(current);
+      // save db data to current
 
-function postAjaxCreateMap(current) {
-  // $ajax("/current"
-  new Promise(function(resolve, reject) {
-    postAjax(current, resolve);
-  }).then(function(current) {
-    createMap(current);
-    return current;
-  });
-}
-
-// if you add to bucketList
-function saveSchedule() {
-  $("#schedule").hide();
-
-  // get current
-
-  new Promise(function(resolve, reject) {
-    getAjax(resolve);
-  }).then(function(current) {
-    // save bucketlist
-    // current.scheduleFlag == 1;
-    current = saveToDb(current);
-    // parse events and show dailies
-    readOldEvents(current);
-  });
-}
-
-function addToBucketList(bucketText) {
-  new Promise(function(resolve, reject) {
-    getAjax(resolve);
-  }).then(function(current) {
-    // add new bucketItem to current
-
-    current["bucketText"] = bucketText;
-
-    current = pushBucketList(current);
-
-    // current = cleanBucketList(current);
-    // add bucketItem to bucketList
-    new Promise(function(resolve, reject) {
-      current = JSON.stringify(current);
-      $.get("/content/" + current, function(current) {
-        console.log("back home", current);
-        // return current;
-        resolve(current);
+      $.post("/current", current, function(data) {
+        createMap(current);
+        return current;
       });
-    }).then(function(current) {
-      new Promise(function(resolve, reject) {
-        console.log("saving new item!");
-
-        postAjax(current, resolve);
-      }).then(function(current) {
-        printBucketList(current);
-        //   console.log("added to current!", current);
-      });
-    });
+    }
   });
 }
 
-function saveDaily() {
-  // read daily
-  new Promise(function(resolve, reject) {
-    var current = getAjax(resolve);
-  }).then(function(current) {
-    new Promise(function(resolve, reject) {
-      current = readNewEvents(current, resolve);
-    }).then(function(current) {
-      saveToDb(current);
-    });
+function addToEvents(item) {
+  var { text, id, location } = item;
+  console.log(text + "  " + location);
+  $.get("/current", function(current) {
+    console.log("return");
+    var event = current["events"];
+    console.log(event[location]);
+
+    if (event[location]) {
+      event[location].push(text);
+
+      event["eventsArr"].push(text);
+      $.post("/current", current, function(current) {
+        console.log("posted ", current);
+      });
+    }
   });
+}
+
+// after dragging to bucket list?
+function addToBucketList(item) {
+  // var { text, id } = item;
+  console.log("addtobl");
+  // console.log(text);
+  // console.log(id);
+  var div = $("#bucketText");
+  var lis = div[0].children;
+  var list = [];
+  for (let item of lis) {
+    list.push(item.textContent);
+  }
+  console.log(list);
+  current["bucketList"] = list;
+  // $.get("/current", function(current) {
+  // add new item to current.bucketlist
+
+  // current["bucketText"] = text;
+  // current = pushBucketList(current);
+  // current = JSON.stringify(current);
+  //clean bucketlist
+  console.log(current);
+  // saveToDb(current);
+  // readOldEvents(current);
+  return current;
+
+  // $.ajax({
+  //   url: "/content",
+  //   data: current,
+  //   method: "POST",
+  // success: function(current) {
+  //     console.log("addbl - get content", current);
+  //     // }).then(function(current) {
+  //     // add to current
+  //     // current = JSON.parse(current);
+  //     $.post("/current", current, function(data) {
+  //       console.log("saving new item!");
+  //       // }).then(function(current) {
+  //       // printBucketList(current);
+  //       return current;
+  //     });
+  //   }
+  // });
 }
 
 // daily boxes disappear
