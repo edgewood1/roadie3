@@ -36,9 +36,11 @@ function createMap(current) {
   current = geoCode(current);
   current
     .then(function(data) {
+      console.log("init map");
       return initMap(data);
     })
     .then(function(data) {
+      console.log("places");
       googlePlaces(data);
     });
 }
