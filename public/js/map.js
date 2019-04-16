@@ -138,6 +138,10 @@ function googlePlaces(current) {
 // 3. create markers
 
 function createMarkers(current) {
+  console.log(current);
+  if (!current) {
+    console.log("there's no current object");
+  }
   $("#places").empty();
   var bounds = new google.maps.LatLngBounds();
   placesList = $("#places");
@@ -159,7 +163,8 @@ function createMarkers(current) {
       title: place.name,
       position: place.geometry.location
     });
-    var events = current["events"];
+    // var events = current["events"];
+    // console.log("1 - ", events);
     // console.log("bucketList: " + current["bucketList"]+ "  " + " name: ", current.places[i].name)
     // if (current.bucketList && events) {
     //   if (
@@ -170,16 +175,17 @@ function createMarkers(current) {
     // loop #
     // place - gemetry
 
-    if (!events) {
-      printToDo(i, placesList, place, current);
+    // if (!current["events"]) {
+    //   console.log("going to print to do");
+    //   printToDo(i, placesList, place, current);
 
-      // don't print item if in eventsArr OR bucketList
-    } else if (
-      !events["eventsArr"].includes(place.name) &&
-      !current["bucketList"].includes(place.name)
-    ) {
-      printToDo(i, placesList, place, current);
-    }
+    //   // don't print item if in eventsArr OR bucketList
+    // } else if (
+    //   !events["eventsArr"].includes(place.name) &&
+    //   !current["bucketList"].includes(place.name)
+    // ) {
+    printToDo(i, placesList, place, current);
+    // }
 
     bounds.extend(place.geometry.location);
   }

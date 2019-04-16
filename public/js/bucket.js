@@ -29,7 +29,7 @@ function initialReadDB(current) {
 
 function printToDo(i, placesList, place) {
   // gets the place name and lists it on the "to do" list
-
+  console.log(place);
   var li = $("<li>");
   var a = Math.floor(Math.random() * 1000000);
   li.attr({
