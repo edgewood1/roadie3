@@ -7,6 +7,7 @@ var current = {};
 
 $(document).ready(function() {
   //default place?
+  console.log("hit");
   $(".sidenav").sidenav({ closeOnClick: true, menuWidth: 120 });
   $(".sidenav li").click(() => {
     $(".sidenav").sidenav("close");
@@ -21,11 +22,11 @@ $(document).ready(function() {
 
   current.type = ["museum"];
   current.pyrmont = {};
-  // $.post("/current", current, function(current) {
-  //   createMap(current);
-  // });
+  $.post("/current", current, function(current) {
+    createMap(current);
+  });
 
-  // geoCode(current);
+  geoCode(current);
 });
 
 var totalData, input, newinput, map;
