@@ -34,6 +34,7 @@ var x;
 // 1. geoCode
 
 function createMap(current) {
+  console.log(current);
   current = geoCode(current);
   current
     .then(function(data) {

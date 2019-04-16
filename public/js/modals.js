@@ -45,6 +45,7 @@ function getNewPlace(e) {
 // SELECT OLD PLACE - MODAL2
 
 $(".place7").on("click", function createPlaceModal() {
+  console.log("place");
   $("#daily").css("display", "none");
   $("#modal2").modal();
   $("td").empty();
@@ -53,9 +54,11 @@ $(".place7").on("click", function createPlaceModal() {
     "value",
 
     function(snapshot) {
+      $("#themeplace").empty();
       snapshot.forEach(function(snap) {
-        place1 = snap.val().place;
+        var place1 = snap.val().place;
         theme = snap.key;
+
         var tr = $("<tr>");
         var td = $("<td>");
         if (place1) {
