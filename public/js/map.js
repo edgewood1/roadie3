@@ -15,13 +15,25 @@ $(document).ready(function() {
   $(".datepicker").datepicker();
   $("#toDo").attr("style", "display: none");
   $("#title").text("Use tabs to create or select a place");
-  current.place = "Durham, NC";
-  current.bucketList = [];
-  current.events = {};
-  current.events["eventsArr"] = [];
 
-  current.type = ["museum"];
-  current.pyrmont = {};
+  class Current {
+    constructor(place) {
+      this.place = place;
+      this.bucketList = [];
+      this.event = { eventsArr: [] };
+      this.type = ["museum"];
+      this.pyrmont = {};
+    }
+  }
+
+  var current = new Current("Durham, NC");
+  // current.place = "Durham, NC";
+  // current.bucketList = [];
+  // current.events = {};
+  // current.events["eventsArr"] = [];
+
+  // current.type = ["museum"];
+  // current.pyrmont = {};
   $.post("/current", current, function(current) {
     createMap(current);
   });

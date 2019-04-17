@@ -25,7 +25,6 @@ app.get("/", function(req, res) {
 app.post("/content", function(req, res) {
   console.log("hit!----------------");
   var cont = req.body;
-  console.log(cont);
   var response = content.cleanBucketList(cont);
   console.log("returned json -= ", response);
   res.send(response);

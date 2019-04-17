@@ -45,16 +45,16 @@ function getNewPlace(e) {
 // SELECT OLD PLACE - MODAL2
 
 $(".place7").on("click", function createPlaceModal() {
-  console.log("place");
   $("#daily").css("display", "none");
   $("#modal2").modal();
   $("td").empty();
   var theme, place1;
+  $("#themeplace").empty();
+
   database.ref().on(
     "value",
 
     function(snapshot) {
-      $("#themeplace").empty();
       snapshot.forEach(function(snap) {
         var place1 = snap.val().place;
         theme = snap.key;
@@ -86,8 +86,6 @@ $(".place7").on("click", function createPlaceModal() {
       console.log("The read failed: " + errorObject.code);
     }
   );
-  //opens modal
-  // $("#modal2").modal();
 });
 
 // SELECT THEME IN PLACES MODAL2
